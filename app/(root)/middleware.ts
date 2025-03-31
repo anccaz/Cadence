@@ -1,12 +1,20 @@
-import { clerkMiddleware } from "@clerk/nextjs/server";
+import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server'
 
-//export default clerkMiddleware();
+const isPublicRoute = createRouteMatcher([
+  '/sign-in(.*)',
+  '/sign-up(.*)'
+])
 
-export default authMiddleware({
-    publicRoutes: ['/','/api/webhook/clerk']
+/** export default clerkMiddleware(async (auth, req) => {
+  if (!isPublicRoute(req)) {
+    await auth.protect()
+  }
+}) */
+
+  export default authMiddleware({
+    publicRoutes: ['/','/api/webhook/clerk'],
     ignoredRoutes: ['/api/sebhook/clerk']
-})
-
+  }) // <- the tutorial said to add this
 
 export const config = {
   matcher: [
@@ -15,4 +23,4 @@ export const config = {
     // Always run for API routes
     '/(api|trpc)(.*)',
   ],
-};
+}
