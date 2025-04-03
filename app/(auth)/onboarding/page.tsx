@@ -14,7 +14,7 @@ async function Page() {
         name: userInfo?.name || user.firstName || "",
         bio: userInfo?.bio || "",
         image: userInfo?.image || user.imageUrl,
-    }
+    } //Visit this again when we need to actually set up user info from database
 
     return(<main className ="mx-auto flex max-w-3xl flex-col justify-start px-10 py-20">
         <h1 className = "head-text">
@@ -26,7 +26,8 @@ async function Page() {
         </p> 
 
         <section className = "mt-9 bg-dark-2 p-10">
-            <AccountProfile />
+            <AccountProfile  user = {userdata} 
+            btnTitle="Continue"/>
         </section>
 
     </main>)
