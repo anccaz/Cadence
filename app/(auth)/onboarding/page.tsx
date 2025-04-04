@@ -1,5 +1,7 @@
 import AccountProfile from "@/components/shared/forms/AccountProfile"
+import MiddleWare from "@/middleware"
 import {currentUser} from '@clerk/nextjs';
+
 
 
 async function Page() {
@@ -26,7 +28,7 @@ async function Page() {
         </p> 
 
         <section className = "mt-9 bg-dark-2 p-10">
-            <AccountProfile  user = {userdata} 
+            <AccountProfile  user = {userData} 
             btnTitle="Continue"/>
         </section>
 

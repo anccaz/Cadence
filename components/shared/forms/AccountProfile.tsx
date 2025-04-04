@@ -32,24 +32,23 @@ interface Props {
     btnTitle: string;
 }
 
-
 const AccountProfile = ({user, btnTitle}: Props) =>  {
 
-        const form = useForm({resolver: zodResolver(UserValidation),
-            defaultValues: {
-                profile_photo: '',
-                name: '',
-                username: '',
-                bio: ''
-            }
-        })
+  const form = useForm({resolver: zodResolver(UserValidation),
+      defaultValues: {
+      profile_photo: '',
+      name: '',
+      username: '',
+      bio: ''
+      }
+  })
 
     
-        function onSubmit(values: z.infer<typeof UserValidation>) {
-            // Do something with the form values.
-            // ✅ This will be type-safe and validated.
-            console.log(values)
-        }
+  function onSubmit(values: z.infer<typeof UserValidation>) {
+      // Do something with the form values.
+      // ✅ This will be type-safe and validated.
+      console.log(values)
+  }
 
 
     return (
@@ -62,7 +61,7 @@ const AccountProfile = ({user, btnTitle}: Props) =>  {
               <FormItem>
                 <FormLabel>Username</FormLabel>
                 <FormControl>
-                  <Input placeholder="shadcn" {...field} />
+                  <Input placeholder="username" {...field} />
                 </FormControl>
                 <FormDescription>
                   This is your public display name.
