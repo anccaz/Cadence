@@ -27,7 +27,6 @@ interface Props {
         name: string;
         bio: string;
         image: string;
-
     }
     btnTitle: string;
 }
