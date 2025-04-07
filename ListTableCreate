@@ -2,7 +2,7 @@ USE Listings
 
 CREATE TABLE ListingTable(
 
-listid int(),
+listid int,
 listingCreator VARCHAR(30),
 songName VARCHAR(255),
 songGenre VARCHAR(255),
