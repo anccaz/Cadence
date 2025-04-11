@@ -18,8 +18,12 @@ Created nuke query for test table clearing
 4/1
 Fixed Userfile insert 
 4/2 
-Fixed Listingfile insert by remove carriage delimiter 
-Looking for path to connect sql to main frontend code
-	- Connect through a server agent and created a job to print listings to a excel table
+Fixed Listingfile insert by removing carriage delimiter 
+Looking for a path to connect SQL to the main frontend code
+	- Connect through a server agent and created a job to print listings to a Excel table
 4/7
 Working on Connecting SQL networks servers to allow for online user access
+- Issue SQL servers are not connecting due to path and location not being found or being blocked
+4/9
+- Issue still very apparent 
+- Issue solved as the University of Texas at Dallas' internet had prevented such connections 
