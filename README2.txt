@@ -17,4 +17,5 @@
 DEVELOPER NOTES:
 - These queries are planning to be run via SQL Agents that can update the databases periodically/on server activation.
 - In the future, ListTableInsert and UserTableInsert will be replaced by frontend POST and GET requests.
-- Search function will require frontend connection, will be future implement (POST and GET requests).
+- Search function will require frontend connection, will be a future implementation (POST and GET requests).
+- CURRENTLY, database is ran on local machines. In the future, the database may be moved to a cloud-based database instead of a local-based system.
