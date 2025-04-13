@@ -1,29 +1,33 @@
 3/26 
 Created SQLMD databases for users and listings
 - Issue connecting temp data text file (usersTestFile.txt) for database (can not bulk load data to SQL) due to access denial
-	- give access to folder that txt was in, but did not fix access error 5
-	- give even more permission to allow SQL systems to read, but did not fix access error 5
-	- add two SQL accounts, but did not fix access error 5
+	- give access to the folder that the txt was in, but did not fix the access error 5
+	- give even more permission to allow SQL systems to read, but did not fix the access error 5
+	- add two SQL accounts, but did not fix the access error 5
 	- modified document URL, but new error 
-		- Resources searched for helped StackOverflow.com, Youtube.com
+		- Resources searched for included StackOverflow.com, Youtube.com
 - Issue sorta resolved | issue is not found on LUIS SQL database, no idea why
 	-issues un-recreateable on LUIS SQLMS
-	-Could not find issue for main database moving to test database on UIS SQL
+	-Could not find issue for main database, moving to test database on UIS SQL
 3/31
-Sent over SQLMD database code to Luis computer 
+Sent over SQLMD database code to Luis' computer 
 Changes column limiters to ';' \\ may need to change this later
-Changed listing table to handle multiply listing instrument preferences through increasing column count to 10 
-Created nuke query for test table clearing
-- Issue when creating inserting preference data, column fills with the next listings data if all previous data columns 	aren't filled
+Changed listing table to handle multiple listing instrument preferences by increasing the column count to 10 
+Created a nuke query for the test table clearing
+- Issue when creating or inserting preference data, the column fills with the next listing's data if all previous data columns 	aren't filled
 4/1
 Fixed Userfile insert 
 4/2 
 Fixed Listingfile insert by removing carriage delimiter 
 Looking for a path to connect SQL to the main frontend code
-	- Connect through a server agent and created a job to print listings to a Excel table
+	- Connect through a server agent and created a job to print listings to an Excel table
 4/7
-Working on Connecting SQL networks servers to allow for online user access
-- Issue SQL servers are not connecting due to path and location not being found or being blocked
+Working on connecting SQL network servers to allow for online user access
+- Issue: SQL servers are not connecting due tothe  path and location not being found or being blocked
 4/9
 - Issue still very apparent 
 - Issue solved as the University of Texas at Dallas' internet had prevented such connections 
+4/11
+Created a hardcoded search function of the user database that sorted based on relevence to the terms
+4/12
+Upgraded the the search function to now take user input to change the search term 
