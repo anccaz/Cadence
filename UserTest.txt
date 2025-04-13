@@ -1,4 +1,5 @@
 
-4,Lus , maxpain , pain@mail.com ,2814939343, @pain  , agony
-3,Burin , totaagony , pain@mail.com ,2814939343, @pain  , agony
-2,Kill Everthing , deth , murder@outlook.com ,2958394232,,
+ 4, Lus, maxpain, pain@mail.com, 2814939343, @pain, ageony, violin
+ 3, Burin, totaagony, pain@mail.com, 2814939343, @pain, agony, tears
+ 2, Kill Everthing, deth, murder@outlook.com, 2958394232, , string, violin
+ 35, Ass Project, lowkwy, iSoOverThisSemester@done.com, 3482903423, @TT, string, cello 
