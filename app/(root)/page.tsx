@@ -12,8 +12,8 @@ import {ClerkProvider, UserButton} from "@clerk/nextjs";
 
 async function Page() {
   return(<main>
-      <h1 className = "head-text">
-          Onboarding
+      <h1 className = "head-text text-left">
+          Home
       </h1>  
   </main>)
 
