@@ -43,6 +43,9 @@
   --radius-xl: calc(var(--radius) + 4px);
 }
 
+.searchbar_input {
+  @apply border-none dark1
+}
 :root {
   --radius: 0.625rem;
   --card: oklch(1 0 0);
