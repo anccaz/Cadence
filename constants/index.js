@@ -15,14 +15,16 @@ export const sidebarLinks = [
       label: "Activity",
     },
     {
+      // label was Create Thread
       imgURL: "/assets/create.svg",
       route: "/create-thread",
-      label: "Create Thread",
+      label: "Find a Band",
     },
     {
+      // label was Communities
       imgURL: "/assets/community.svg",
       route: "/communities",
-      label: "Communities",
+      label: "Bands",
     },
     {
       imgURL: "/assets/user.svg",
