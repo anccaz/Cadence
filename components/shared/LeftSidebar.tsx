@@ -26,11 +26,11 @@ const LeftSidebar = () => {
               href={route}
               key={link.label}
               className={`flex items-center gap-4 px-3 py-2 rounded-lg transition-colors duration-200 hover:bg-primary-100 ${
-                isActive ? "bg-primary-500 text-white" : "text-gray-700"
+                isActive ? "bg-primary-500" : "text-gray-700"
               }`}
             >
               <Image src={link.imgURL} alt={link.label} width={24} height={24} />
-              <p className="text-light-1">{link.label}</p>
+              <p className="text-subtle-medium text-light-1 max-lg:hidden">{link.label}</p>
             </Link>
           );
         })}
