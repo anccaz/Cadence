@@ -12,9 +12,9 @@ const Topbar = () => {
     <header className="h-16 w-full bg-white border-b border-gray-200 flex items-center justify-center px-6 shadow-sm z-30">
       <div className="flex items-center gap-4">
         {/* Logo */}
-        <Image src="/logo.svg" alt="Logo" width={32} height={32} />
+        <Image src="/logo.png" alt="Logo" width={32} height={32} />
         {/* Title */}
-        <h1 className="text-xl font-semibold text-gray-800">Dashboard</h1>
+        <h1 className="text-xxl font-semibold text-gray-10000">Cadence</h1>
         {/* Optional: User actions */}
         <SignedIn>
           <SignOutButton signOutCallback={() => router.push("/sign-in")}>

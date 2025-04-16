@@ -30,8 +30,8 @@ const LeftSidebar = () => {
               }`}
             >
               <Image src={link.imgURL} alt={link.label} width={24} height={24} />
-              {/* Match BottomBar text style exactly */}
-              <p className="text-light-1 font-medium max-lg:hidden">{link.label}</p>
+              {/* Match bottom bar text style exactly */}
+              <p className="font-medium text-light-1 max-lg:hidden">{link.label}</p>
             </Link>
           );
         })}
@@ -43,7 +43,7 @@ const LeftSidebar = () => {
           <SignOutButton signOutCallback={() => router.push("/sign-in")}>
             <div className="flex cursor-pointer gap-4 p-4 rounded-lg hover:bg-red-50 transition">
               <Image src="/assets/logout.svg" alt="logout" width={24} height={24} />
-              <p className="text-light-2 font-medium">Logout</p>
+              <p className="font-medium text-light-2">Logout</p>
             </div>
           </SignOutButton>
         </SignedIn>
