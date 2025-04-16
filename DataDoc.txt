@@ -31,3 +31,5 @@ Working on connecting SQL network servers to allow for online user access
 Created a hardcoded search function of the user database that sorted based on relevence to the terms
 4/12
 Upgraded the the search function to now take user input to change the search term 
+4/16
+Connected the MSSQL servers to Azure cloud to help make the database online
