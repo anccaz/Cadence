@@ -1,52 +1,34 @@
 "use client";
 
+import React from "react";
 import Image from "next/image";
-import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-import { SignOutButton, SignedIn, useAuth } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
+import { SignedIn, SignOutButton } from "@clerk/nextjs";
 
-import { sidebarLinks } from "@/constants";
-
-const LeftSidebar = () => {
+const Topbar = () => {
   const router = useRouter();
-  const pathname = usePathname();
-  const { userId } = useAuth();
 
   return (
-    <aside className="fixed top-0 left-0 h-screen w-64 bg-white border-r border-gray-200 flex flex-col justify-between z-40 custom-scrollbar">
-      <nav className="flex flex-col gap-6 px-6 pt-8">
-        {sidebarLinks.map((link) => {
-          const route = link.route === "/profile" ? `${link.route}/${userId}` : link.route;
-          const isActive =
-            (pathname.includes(route) && route.length > 1) || pathname === route;
+    <header className="h-16 w-full bg-white border-b border-gray-200 flex items-center justify-between px-6 shadow-sm z-30">
+      {/* Left side - Logo or title */}
+      <div className="flex items-center gap-4">
+        {/* Example logo */}
+        <Image src="/logo.svg" alt="Logo" width={32} height={32} />
+        <h1 className="text-xl font-semibold text-gray-800">Dashboard</h1>
+      </div>
 
-          return (
-            <Link
-              href={route}
-              key={link.label}
-              className={`flex items-center gap-4 py-3 px-2 rounded-lg transition-colors duration-200 hover:bg-primary-100 ${
-                isActive ? "bg-primary-500 text-white" : "text-gray-700"
-              }`}
-            >
-              <Image src={link.imgURL} alt={link.label} width={24} height={24} />
-              <span className="text-base font-medium">{link.label}</span>
-            </Link>
-          );
-        })}
-      </nav>
-
-      <div className="px-6 pb-8">
+      {/* Right side - User actions */}
+      <div className="flex items-center gap-4">
         <SignedIn>
           <SignOutButton signOutCallback={() => router.push("/sign-in")}>
-            <button className="flex items-center gap-4 w-full py-3 px-2 rounded-lg text-red-600 hover:bg-red-50 transition-colors duration-200">
-              <Image src="/assets/logout.svg" alt="logout" width={24} height={24} />
-              <span className="font-medium">Logout</span>
+            <button className="text-red-600 hover:text-red-800 font-medium transition-colors">
+              Logout
             </button>
           </SignOutButton>
         </SignedIn>
       </div>
-    </aside>
+    </header>
   );
 };
 
-export default LeftSidebar;
+export default Topbar;
