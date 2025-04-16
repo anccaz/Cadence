@@ -14,6 +14,8 @@ async function Page() {
         name: userInfo?.name || user.firstName || "",
         bio: userInfo?.bio || "",
         image: userInfo?.image || user.imageUrl,
+        genre: userInfo?.genre || "",
+        instrument: userInfo?.instrument || ""
     } //Visit this again when we need to actually set up user info from database
 
     return(<main className ="mx-auto flex max-w-3xl flex-col justify-start px-10 py-20">
@@ -21,8 +23,7 @@ async function Page() {
             Onboarding
         </h1>  
         <p className = "mt-3 text-base-regular text-light-2">
-            Complete your profile now to use Cadence
-            
+            Complete your profile now to use Cadence 
         </p> 
 
         <section className = "mt-9 bg-dark-2 p-10">

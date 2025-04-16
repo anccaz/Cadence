@@ -1,5 +1,15 @@
 import {SignUp} from "@clerk/nextjs"
+import { dark } from "@clerk/themes";
 
 export default function Page(){
-    return <SignUp />
+    return <main>
+        <h1 className = "flex items-center justify-center ">
+            Welcome to Cadence
+        </h1> 
+        
+        <SignUp appearance={{
+               baseTheme: dark,
+              }} />
+        </main>
+              
 }
