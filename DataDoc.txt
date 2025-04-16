@@ -33,3 +33,4 @@ Created a hardcoded search function of the user database that sorted based on re
 Upgraded the the search function to now take user input to change the search term 
 4/16
 Connected the MSSQL servers to Azure cloud to help make the database online
+Moved database txt files from local drives to cloud storage for quicker and ease of access
