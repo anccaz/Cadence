@@ -13,11 +13,11 @@ const LeftSidebar = () => {
   const { userId } = useAuth();
 
   return (
-    <section className="custom-scrollbar leftsidebar">
-      <div className="flex w-full flex-1 flex-col gap-6 px-6">
+    <section className="fixed top-0 left-0 h-screen w-64 border-r border-gray-300 bg-white flex flex-col justify-between z-40 custom-scrollbar">
+      {/* Navigation links */}
+      <div className="flex flex-col gap-6 px-4 pt-8">
         {sidebarLinks.map((link) => {
           const route = link.route === "/profile" ? `${link.route}/${userId}` : link.route;
-
           const isActive =
             (pathname.includes(route) && route.length > 1) || pathname === route;
 
@@ -25,21 +25,24 @@ const LeftSidebar = () => {
             <Link
               href={route}
               key={link.label}
-              className={`leftsidebar_link ${isActive ? "bg-primary-500" : ""}`}
+              className={`flex items-center gap-4 px-3 py-2 rounded-lg transition-colors duration-200 hover:bg-primary-100 ${
+                isActive ? "bg-primary-500 text-white" : "text-gray-700"
+              }`}
             >
               <Image src={link.imgURL} alt={link.label} width={24} height={24} />
-              <p className="text-light-1 max-lg:hidden">{link.label}</p>
+              <p className="text-light-1">{link.label}</p>
             </Link>
           );
         })}
       </div>
 
-      <div className="mt-10 px-6">
+      {/* Logout button at bottom */}
+      <div className="px-4 pb-8">
         <SignedIn>
           <SignOutButton signOutCallback={() => router.push("/sign-in")}>
-            <div className="flex cursor-pointer gap-4 p-4">
+            <div className="flex cursor-pointer gap-4 p-4 rounded-lg hover:bg-red-50 transition">
               <Image src="/assets/logout.svg" alt="logout" width={24} height={24} />
-              <p className="text-light-2 max-lg:hidden">Logout</p>
+              <p className="text-light-2">Logout</p>
             </div>
           </SignOutButton>
         </SignedIn>
