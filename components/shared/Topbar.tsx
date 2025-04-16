@@ -1,45 +1,52 @@
-import { OrganizationSwitcher, SignedIn, SignOutButton } from "@clerk/nextjs";
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
-import { dark } from '@clerk/themes'
+import { usePathname, useRouter } from "next/navigation";
+import { SignOutButton, SignedIn, useAuth } from "@clerk/nextjs";
 
-function Topbar() {
-  const isUserLoggedIn = true;
+import { sidebarLinks } from "@/constants";
+
+const LeftSidebar = () => {
+  const router = useRouter();
+  const pathname = usePathname();
+  const { userId } = useAuth();
 
   return (
-    <nav className="topbar">
-      <Link href="/" className="flexiterms-center gap-4">
-        <Image src="/logo.png" alt="logo" width={28} height={28} />
-        <p className="text-heading3-bold text-light-1 max-xs:hidden">Cadence</p>
-      </Link>
+    <aside className="fixed top-0 left-0 h-screen w-64 bg-white border-r border-gray-200 flex flex-col justify-between z-40 custom-scrollbar">
+      <nav className="flex flex-col gap-6 px-6 pt-8">
+        {sidebarLinks.map((link) => {
+          const route = link.route === "/profile" ? `${link.route}/${userId}` : link.route;
+          const isActive =
+            (pathname.includes(route) && route.length > 1) || pathname === route;
 
-      <div className="flex items-center gap-1">
-        <div className="block md:hidden">
-          <SignedIn>
-            <SignOutButton>
-              <div className="flex cursor-pointer">
-                <Image
-                  src="/assets/logout.png"
-                  alt="logout"
-                  width={24}
-                  height={24}
-                />
-              </div>
-            </SignOutButton>
-          </SignedIn>
-        </div>
+          return (
+            <Link
+              href={route}
+              key={link.label}
+              className={`flex items-center gap-4 py-3 px-2 rounded-lg transition-colors duration-200 hover:bg-primary-100 ${
+                isActive ? "bg-primary-500 text-white" : "text-gray-700"
+              }`}
+            >
+              <Image src={link.imgURL} alt={link.label} width={24} height={24} />
+              <span className="text-base font-medium">{link.label}</span>
+            </Link>
+          );
+        })}
+      </nav>
 
-        <OrganizationSwitcher 
-          appearance={{
-            elements: {
-              organizationSwitcherTrigger: 
-              "py-2 px-4"
-            }
-          }}
-          />
+      <div className="px-6 pb-8">
+        <SignedIn>
+          <SignOutButton signOutCallback={() => router.push("/sign-in")}>
+            <button className="flex items-center gap-4 w-full py-3 px-2 rounded-lg text-red-600 hover:bg-red-50 transition-colors duration-200">
+              <Image src="/assets/logout.svg" alt="logout" width={24} height={24} />
+              <span className="font-medium">Logout</span>
+            </button>
+          </SignOutButton>
+        </SignedIn>
       </div>
-    </nav>
-  )
-}
+    </aside>
+  );
+};
 
-export default Topbar;
+export default LeftSidebar;
