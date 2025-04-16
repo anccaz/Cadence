@@ -11,7 +11,7 @@ function Bottombar() {
 
   return (
     <section className="fixed bottom-0 left-0 w-full z-50 bg-white border-t border-gray-200">
-      <div className="grid h-full max-w-lg grid-cols-4 mx-auto font-medium">
+      <div className="flex flex-row flex-nowrap items-center justify-evenly w-full max-w-lg mx-auto font-medium">
         {sidebarLinks.map((link) => {
           const isActive =
             (pathname.includes(link.route) && link.route.length > 1) ||
@@ -30,7 +30,7 @@ function Bottombar() {
                 height={16}
                 className="object-contain"
               />
-              <span className="text-light-1 max-sm:hidden">{link.label}</span>
+              <span className="text-light-1">{link.label}</span>
             </Link>
           );
         })}
