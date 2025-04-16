@@ -2,8 +2,6 @@ import AccountProfile from "@/components/shared/forms/AccountProfile"
 import MiddleWare from "@/middleware"
 import {currentUser} from '@clerk/nextjs/server';
 
-
-
 async function Page() {
     const user = await currentUser();
 
