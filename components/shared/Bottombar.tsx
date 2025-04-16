@@ -10,8 +10,8 @@ function Bottombar() {
   const pathname = usePathname();
 
   return (
-    <section className='bottombar'>
-      <div className='bottombar_container'>
+    <section className="fixed bottom-0 left-0 w-full z-50 bg-white border-t border-gray-200">
+      <div className="grid h-full max-w-lg grid-cols-4 mx-auto font-medium">
         {sidebarLinks.map((link) => {
           const isActive =
             (pathname.includes(link.route) && link.route.length > 1) ||
@@ -21,19 +21,16 @@ function Bottombar() {
             <Link
               href={link.route}
               key={link.label}
-              className={`bottombar_link ${isActive && "bg-primary-500"}`}
+              className={`flex flex-col items-center justify-center p-2 ${isActive ? "bg-primary-500" : ""}`}
             >
               <Image
                 src={link.imgURL}
                 alt={link.label}
                 width={16}
                 height={16}
-                className='object-contain'
+                className="object-contain"
               />
-
-              <p className='text-subtle-medium text-light-1 max-sm:hidden'>
-                {link.label.split(/\s+/)[0]}
-              </p>
+              <span className="text-light-1 max-sm:hidden">{link.label}</span>
             </Link>
           );
         })}
