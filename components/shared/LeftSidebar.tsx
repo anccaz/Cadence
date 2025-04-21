@@ -4,7 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { SignOutButton, SignedIn, useAuth } from "@clerk/nextjs";
-
 import { sidebarLinks } from "@/constants";
 
 const LeftSidebar = () => {
@@ -32,15 +31,15 @@ const LeftSidebar = () => {
               className={`flex items-center gap-6 px-6 py-6 rounded-lg transition-colors duration-200 font-serif text-gray-200
                 ${
                   isActive
-                    ? "bg-gray-900 font-extrabold"
-                    : "hover:bg-gray-900"
+                    ? "bg-purple-900"
+                    : "hover:bg-purple-700"
                 }`}
               style={{ fontSize: "1.2rem" }}
             >
               <Image src={link.imgURL} alt={link.label} width={24} height={24} />
-              <p className="font-medium font-serif text-gray-200 whitespace-nowrap max-lg:hidden">
+              <span className="font-serif text-gray-200 whitespace-nowrap max-lg:hidden" style={{ fontSize: "1.2rem" }}>
                 {link.label}
-              </p>
+              </span>
             </Link>
           );
         })}
@@ -52,7 +51,9 @@ const LeftSidebar = () => {
           <SignOutButton signOutCallback={() => router.push("/sign-in")}>
             <div className="flex cursor-pointer gap-4 p-4 rounded-lg hover:bg-red-900 transition">
               <Image src="/assets/logout.svg" alt="logout" width={24} height={24} />
-              <p className="font-medium font-serif text-gray-200">Logout</p>
+              <span className="font-serif text-gray-200" style={{ fontSize: "1.2rem" }}>
+                Logout
+              </span>
             </div>
           </SignOutButton>
         </SignedIn>

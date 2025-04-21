@@ -15,12 +15,18 @@ const Topbar = () => {
     >
       <div className="flex items-center gap-6">
         {/* Logo */}
-        <Image src="/logo.png" alt="Logo" width={70} height={110} />
+        <Image src="/logo.png" alt="Logo" width={90} height={120} />
         {/* Title */}
-        <h1 className="font-extrabold font-serif text-gray-200 tracking-tight" style={{ fontSize: "5rem", lineHeight: 1.1 }}>
+        <h1 className="font-bold font-serif text-gray-200 tracking-tight" 
+        style={{
+          fontSize: "5rem",
+          lineHeight: 1.1,
+          textShadow: "2px 2px 8px rgba(195, 177, 225, 0.9)" // dark purple shadow
+        }}
+        >
           Cadence
         </h1>
-        <Image src="/logo.png" alt="Logo" width={70} height={110} />
+        <Image src="/logo.png" alt="Logo" width={90} height={120} />
         {/* Optional: User actions */}
         <SignedIn>
           <SignOutButton signOutCallback={() => router.push('/sign-in')}>
