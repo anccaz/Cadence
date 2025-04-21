@@ -13,11 +13,15 @@ const LeftSidebar = () => {
   const { userId } = useAuth();
 
   return (
-    <section className="fixed top-0 left-0 h-screen w-64 border-r border-gray-300 bg-white flex flex-col justify-between z-40 custom-scrollbar">
+    <section
+      className="fixed top-0 left-0 h-screen w-64 border-r border-gray-800 flex flex-col justify-between z-40 custom-scrollbar"
+      style={{ backgroundColor: "#121212" }}
+    >
       {/* Navigation links */}
-      <div className="flex flex-col gap-6 px-4 pt-8">
+      <div className="flex flex-col gap-6 px-4 pt-16">
         {sidebarLinks.map((link) => {
-          const route = link.route === "/profile" ? `${link.route}/${userId}` : link.route;
+          const route =
+            link.route === "/profile" ? `${link.route}/${userId}` : link.route;
           const isActive =
             (pathname.includes(route) && route.length > 1) || pathname === route;
 
@@ -25,13 +29,18 @@ const LeftSidebar = () => {
             <Link
               href={route}
               key={link.label}
-              className={`flex items-center gap-4 px-3 py-2 rounded-lg transition-colors duration-200 hover:bg-primary-100 ${
-                isActive ? "bg-primary-500" : "text-gray-700"
-              }`}
+              className={`flex items-center gap-6 px-6 py-6 rounded-lg transition-colors duration-200 font-serif text-gray-200
+                ${
+                  isActive
+                    ? "bg-gray-900 font-extrabold"
+                    : "hover:bg-gray-900"
+                }`}
+              style={{ fontSize: "1.2rem" }}
             >
               <Image src={link.imgURL} alt={link.label} width={24} height={24} />
-              {/* Match bottom bar text style exactly */}
-              <p className="font-medium text-light-1 max-lg:hidden">{link.label}</p>
+              <p className="font-medium font-serif text-gray-200 whitespace-nowrap max-lg:hidden">
+                {link.label}
+              </p>
             </Link>
           );
         })}
@@ -41,9 +50,9 @@ const LeftSidebar = () => {
       <div className="px-4 pb-8">
         <SignedIn>
           <SignOutButton signOutCallback={() => router.push("/sign-in")}>
-            <div className="flex cursor-pointer gap-4 p-4 rounded-lg hover:bg-red-50 transition">
+            <div className="flex cursor-pointer gap-4 p-4 rounded-lg hover:bg-red-900 transition">
               <Image src="/assets/logout.svg" alt="logout" width={24} height={24} />
-              <p className="font-medium text-light-2">Logout</p>
+              <p className="font-medium font-serif text-gray-200">Logout</p>
             </div>
           </SignOutButton>
         </SignedIn>
