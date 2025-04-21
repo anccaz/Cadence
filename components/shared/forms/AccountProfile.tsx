@@ -10,6 +10,17 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
+
+
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+
+
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import Image from 'next/image'
@@ -31,7 +42,8 @@ interface Props {
         name: string;
         bio: string;
         image: string;
-
+        genre: string;
+        instrument: string;
     }
     btnTitle: string;
 }
@@ -78,9 +90,8 @@ const AccountProfile = ({user, btnTitle}: Props) =>  {
   
         }
       }
+    }
 
-
-  }
 
     return (
         <Form {...form}>
@@ -178,9 +189,46 @@ const AccountProfile = ({user, btnTitle}: Props) =>  {
               </FormItem>
             )}
           />
+
+          <Select>
+            <FormItem className = "flex flex-col w-full gap-3">
+              <FormLabel className = "text-base-semibold text-light-2">
+                Favorite Genre
+              </FormLabel>
+              <SelectTrigger className="w-[500px]">
+                <SelectValue placeholder="" />
+              </SelectTrigger>
+              <SelectContent>
+              <SelectItem value="Vocals">Vocals</SelectItem>
+                <SelectItem value="Guitar">Guitar</SelectItem>
+                <SelectItem value="Bass">Bass</SelectItem>
+                <SelectItem value="Drums">Drums</SelectItem>
+              </SelectContent>
+              </FormItem>
+            </Select>
+
+
+            <Select>
+            <FormItem className = "flex flex-col w-full gap-3">
+              <FormLabel className = "text-base-semibold text-light-2">
+                Perfered Instrument
+              </FormLabel>
+              <SelectTrigger className="w-[500px]">
+                <SelectValue placeholder="" />
+              </SelectTrigger>
+              <SelectContent>
+              <SelectItem value="Vocals">Vocals</SelectItem>
+                <SelectItem value="Guitar">Guitar</SelectItem>
+                <SelectItem value="Bass">Bass</SelectItem>
+                <SelectItem value="Drums">Drums</SelectItem>
+              </SelectContent>
+              </FormItem>
+            </Select>
+
           <Button type="submit" >Submit</Button>
         </form>
       </Form>
     )
-}
+  }
+
 export default AccountProfile;
