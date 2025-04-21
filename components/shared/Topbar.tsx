@@ -14,7 +14,7 @@ const Topbar = () => {
         {/* Logo */}
         <Image src="/logo.png" alt="Logo" width={32} height={32} />
         {/* Title */}
-        <h1 className="text-xxl font-semibold text-gray-10000">Cadence</h1>
+        <h1 className="text-10xl font-semibold text-gray-1000">Cadence</h1>
         {/* Optional: User actions */}
         <SignedIn>
           <SignOutButton signOutCallback={() => router.push("/sign-in")}>
