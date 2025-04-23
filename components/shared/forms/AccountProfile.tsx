@@ -1,6 +1,8 @@
 "use client"
 
+import Link from "next/link"
 import { Button } from "@/components/ui/button"
+import { buttonVariants } from "@/components/ui/button"
 import {
   Form,
   FormControl,
@@ -11,7 +13,6 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 
-
 import {
   Select,
   SelectContent,
@@ -19,7 +20,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-
 
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -40,7 +40,6 @@ interface Props {
         objectId: string;
         username: string;
         name: string;
-        bio: string;
         image: string;
         genre: string;
         instrument: string;
@@ -57,7 +56,8 @@ const AccountProfile = ({user, btnTitle}: Props) =>  {
       profile_photo: user?.image || "",
       name: user?.name || '',
       username: user?.username || '',
-      bio: user?.bio||''
+      instrument: user?.instrument||'',
+      genre: user?.genre || "",
       }
   })
 
@@ -87,11 +87,9 @@ const AccountProfile = ({user, btnTitle}: Props) =>  {
 
         if(imgRes && imgRes[0].ufsUrl){
           values.profile_photo = imgRes[0].ufsUrl;
-  
         }
       }
     }
-
 
     return (
         <Form {...form}>
@@ -171,61 +169,63 @@ const AccountProfile = ({user, btnTitle}: Props) =>  {
             )}
           />
 
-        <FormField
-            control={form.control}
-            name="bio"
-            render={({ field }) => (
-              <FormItem className = "flex flex-col w-full gap-3">
-                <FormLabel className = "text-base-semibold text-light-2">
-                Bio 
-              </FormLabel>
+          <FormField
+          control={form.control}
+          name="genre"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Favorite Genre</FormLabel>
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
-                  <Textarea 
-                  rows= {10}
-                  className = "account-form_input no-focus" 
-                  {...field}
-                  />
+                  <SelectTrigger className="w-[500px]">
+                    <SelectValue placeholder="Select your favorite music genre" />
+                  </SelectTrigger>
                 </FormControl>
-              </FormItem>
+                <SelectContent>
+                    <SelectItem value="vocals">Vocals</SelectItem>
+                    <SelectItem value="guitar">Guitar</SelectItem>
+                    <SelectItem value="bass">Bass</SelectItem>
+                    <SelectItem value="drums">Drums</SelectItem>
+                </SelectContent>
+              </Select>
+              <FormDescription>
+              </FormDescription>
+              <FormMessage/>
+            </FormItem>
+          )}
+          />
+
+          <FormField
+          control={form.control}
+          name="instrument"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Preferred Instrument</FormLabel>
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <FormControl>
+                  <SelectTrigger className="w-[500px]">
+                    <SelectValue placeholder="Select your primary instrument" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                    <SelectItem value="vocals">Vocals</SelectItem>
+                    <SelectItem value="guitar">Guitar</SelectItem>
+                    <SelectItem value="bass">Bass</SelectItem>
+                    <SelectItem value="keyboard">Keyboard</SelectItem>
+                    <SelectItem value="drums">Drums</SelectItem>
+                </SelectContent>
+              </Select>
+              <FormDescription>
+              </FormDescription>
+              <FormMessage/>
+            </FormItem>
             )}
           />
 
-          <Select>
-            <FormItem className = "flex flex-col w-full gap-3">
-              <FormLabel className = "text-base-semibold text-light-2">
-                Favorite Genre
-              </FormLabel>
-              <SelectTrigger className="w-[500px]">
-                <SelectValue placeholder="" />
-              </SelectTrigger>
-              <SelectContent>
-              <SelectItem value="Vocals">Vocals</SelectItem>
-                <SelectItem value="Guitar">Guitar</SelectItem>
-                <SelectItem value="Bass">Bass</SelectItem>
-                <SelectItem value="Drums">Drums</SelectItem>
-              </SelectContent>
-              </FormItem>
-            </Select>
-
-
-            <Select>
-            <FormItem className = "flex flex-col w-full gap-3">
-              <FormLabel className = "text-base-semibold text-light-2">
-                Perfered Instrument
-              </FormLabel>
-              <SelectTrigger className="w-[500px]">
-                <SelectValue placeholder="" />
-              </SelectTrigger>
-              <SelectContent>
-              <SelectItem value="Vocals">Vocals</SelectItem>
-                <SelectItem value="Guitar">Guitar</SelectItem>
-                <SelectItem value="Bass">Bass</SelectItem>
-                <SelectItem value="Drums">Drums</SelectItem>
-              </SelectContent>
-              </FormItem>
-            </Select>
-
-          <Button type="submit" >Submit</Button>
+          <Button type="submit">Submit
+            <Link href="/"></Link>
+          </Button>
+          
         </form>
       </Form>
     )
