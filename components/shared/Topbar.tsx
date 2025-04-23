@@ -15,7 +15,7 @@ const Topbar = () => {
     >
       <div className="flex items-center gap-6">
         {/* Logo */}
-        <Image src="/logo.png" alt="Logo" width={90} height={120} />
+        <Image src="/logo.png" alt="Logo" width={65} height={120} />
         {/* Title */}
         <h1 className="font-bold font-serif text-gray-200 tracking-tight" 
         style={{
@@ -26,7 +26,7 @@ const Topbar = () => {
         >
           Cadence
         </h1>
-        <Image src="/logo.png" alt="Logo" width={90} height={120} />
+        <Image src="/logo.png" alt="Logo" width={65} height={120} />
         {/* Optional: User actions */}
         <SignedIn>
           <SignOutButton signOutCallback={() => router.push('/sign-in')}>
