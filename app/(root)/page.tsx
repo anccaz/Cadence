@@ -1,61 +1,70 @@
-import { currentUser } from "@clerk/nextjs/server";
-import { redirect } from "next/navigation";
+"use client";
+import React, { useState } from "react";
 
-import ThreadCard from "@/components/cards/ThreadCard";
-import Pagination from "@/components/shared/Pagination";
+export default function Home() {
+  const [text, setText] = useState("");
+  const [threads, setThreads] = useState<
+    { id: number; content: string; createdAt: Date }[]
+  >([]);
 
-import { fetchPosts } from "@/lib/actions/thread.actions";
-import { fetchUser } from "@/lib/actions/user.actions";
-
-async function Home({
-  searchParams,
-}: {
-  searchParams: { [key: string]: string | undefined };
-}) {
-  const user = await currentUser();
-  if (!user) return null;
-
-  const userInfo = await fetchUser(user.id);
-  if (!userInfo?.onboarded) redirect("/onboarding");
-
-  const result = await fetchPosts(
-    searchParams.page ? +searchParams.page : 1,
-    30
-  );
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!text.trim()) return;
+    setThreads([
+      {
+        id: Date.now(),
+        content: text,
+        createdAt: new Date(),
+      },
+      ...threads,
+    ]);
+    setText("");
+  };
 
   return (
-    <>
-      <h1 className='head-text text-left'>Home</h1>
+    <main className="ml-64 mt-10 w-full max-w-xl text-left">
+      <h1 className="text-2xl font-bold mb-6">Home</h1>
 
-      <section className='mt-9 flex flex-col gap-10'>
-        {result.posts.length === 0 ? (
-          <p className='no-result'>No threads found</p>
+      {/* Thread Card for Creating a Post */}
+      <div className="bg-white rounded-lg shadow p-4 mb-6 border border-gray-200">
+        <form onSubmit={handleSubmit}>
+          <textarea
+            className="w-full p-2 rounded border border-gray-300 focus:outline-none focus:ring"
+            rows={3}
+            placeholder="What's on your mind?"
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+          />
+          <div className="flex justify-end mt-2">
+            <button
+              type="submit"
+              className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+              disabled={!text.trim()}
+            >
+              Post
+            </button>
+          </div>
+        </form>
+      </div>
+
+      {/* Render Thread Cards */}
+      <section className="flex flex-col gap-6">
+        {threads.length === 0 ? (
+          <p className="text-gray-500">No threads yet. Start the conversation!</p>
         ) : (
-          <>
-            {result.posts.map((post) => (
-              <ThreadCard
-                key={post._id}
-                id={post._id}
-                currentUserId={user.id}
-                parentId={post.parentId}
-                content={post.text}
-                author={post.author}
-                community={post.community}
-                createdAt={post.createdAt}
-                comments={post.children}
-              />
-            ))}
-          </>
+          threads.map((thread) => (
+            <div
+              key={thread.id}
+              className="bg-white rounded-lg shadow p-4 border border-gray-200"
+            >
+              <div className="text-gray-800 mb-2">{thread.content}</div>
+              <div className="text-xs text-gray-400">
+                {thread.createdAt.toLocaleString()}
+              </div>
+            </div>
+          ))
         )}
       </section>
-
-      <Pagination
-        path='/'
-        pageNumber={searchParams?.page ? +searchParams.page : 1}
-        isNext={result.isNext}
-      />
-    </>
+    </main>
   );
 }
-
-export default Home;
