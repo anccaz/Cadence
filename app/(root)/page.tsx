@@ -24,22 +24,24 @@ const sampleBands = [
 
 export default function HomePage() {
   return (
-    <main className="font-serif flex flex-col items-center min-h-screen w-full bg-gradient-to-br from-white via-[#b9a9de] to-[#8C70C4]">
+    <main className="font-serif flex flex-col min-h-screen w-full bg-gradient-to-br from-white via-[#b9a9de] to-[#8C70C4] ml-64">
       {/* Hero Section */}
-      <section className="w-full max-w-4xl text-center mt-24 mb-12 px-4">
-        <h1 className="text-5xl font-extrabold text-[#8C70C4] drop-shadow-lg mb-6">
+      <section className="w-full max-w-4xl mt-24 mb-12 px-4 mx-auto">
+        <h1 className="text-5xl font-extrabold text-[#8C70C4] drop-shadow-lg mb-6 text-center">
           Find Your Band at <span className="text-[#5D4197]">UT Dallas</span>
         </h1>
-        <p className="text-xl text-[#7A5FB3] mb-8">
+        <p className="text-xl text-[#7A5FB3] mb-8 text-center">
           Meet fellow Comets, form bands, and create music you love. Whether you play, sing, or produce, discover your next bandmates right here on campus!
         </p>
-        <button className="px-8 py-4 bg-[#B9A9DE] text-[#5D4197] rounded-full font-semibold text-lg shadow-lg hover:bg-[#C8B8E5] transition">
-          Get Started
-        </button>
+        <div className="flex justify-center">
+          <button className="px-8 py-4 bg-[#B9A9DE] text-[#5D4197] rounded-full font-semibold text-lg shadow-lg hover:bg-[#C8B8E5] transition">
+            Get Started
+          </button>
+        </div>
       </section>
 
       {/* Featured Bands Looking for Members */}
-      <section className="w-full max-w-5xl px-4 mb-16">
+      <section className="w-full max-w-5xl px-4 mb-16 mx-auto">
         <h2 className="text-3xl font-bold text-[#8C70C4] mb-8 text-center">
           Bands Looking for Members
         </h2>
@@ -67,7 +69,7 @@ export default function HomePage() {
       </section>
 
       {/* How It Works */}
-      <section className="w-full max-w-4xl px-4 mb-24">
+      <section className="w-full max-w-4xl px-4 mb-24 mx-auto">
         <h2 className="text-2xl font-bold text-[#8C70C4] mb-6 text-center">
           How It Works
         </h2>
