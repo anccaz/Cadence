@@ -3,19 +3,19 @@ import React from "react";
 
 const sampleBands = [
   {
-    name: "Rockin Rollers",
+    name: "Rolltide",
     genre: "Indie Rock",
     image: "/utdallas1.png",
     lookingFor: "Drummer",
   },
   {
-    name: "Jazz Lovin'",
+    name: "Galaxy Jammers",
     genre: "Jazz Fusion",
     image: "/utdallas2.png",
     lookingFor: "Saxophonist",
   },
   {
-    name: "Comet Beats",
+    name: "Nebula",
     genre: "EDM",
     image: "/utdallas3.png",
     lookingFor: "Vocalist",

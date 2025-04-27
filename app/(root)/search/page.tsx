@@ -67,7 +67,7 @@ const musicians = [
     name: "Alice Lock",
     instrument: "Vocals",
     genre: "Pop",
-    image: "/musician3.png",
+    image: "/musician4.png",
     type: "musician",
   },
 ];
