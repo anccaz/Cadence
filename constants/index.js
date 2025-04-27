@@ -12,13 +12,13 @@ export const sidebarLinks = [
     {
       imgURL: "/assets/heart.svg",
       route: "/activity",
-      label: "Activity",
+      label: "Join a Band",
     },
     {
       // label was Create Thread
       imgURL: "/assets/create.svg",
       route: "/create-thread",
-      label: "Find a Band",
+      label: "Create a Band",
     },
     {
       // label was Communities

@@ -1,8 +1,13 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const instrumentOptions = [
   "Guitar",
+  "Harp",
+  "Banjo",
+  "Ukulele",
+  "Bassoon",
+  "Oboe",
   "Bass",
   "Drums",
   "Vocals",
@@ -10,6 +15,7 @@ const instrumentOptions = [
   "Piano",
   "Synthesizer",
   "Violin",
+  "Viola",
   "Cello",
   "Trumpet",
   "Saxophone",
@@ -29,6 +35,7 @@ const genreOptions = [
   "Folk",
   "Blues",
   "Metal",
+  "Reggae",
   "Other",
 ];
 
@@ -52,6 +59,15 @@ export default function UserProfilePage() {
   });
   const [savedProfile, setSavedProfile] = useState<Profile | null>(null);
   const [editing, setEditing] = useState(true);
+
+  useEffect(() => {
+    const storedProfile = localStorage.getItem("userProfile");
+    if (storedProfile) {
+      setProfile(JSON.parse(storedProfile));
+      setSavedProfile(JSON.parse(storedProfile));
+      setEditing(false);
+    }
+  }, []);
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setProfile({ ...profile, name: e.target.value });
@@ -84,6 +100,7 @@ export default function UserProfilePage() {
 
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
+    localStorage.setItem("userProfile", JSON.stringify(profile));
     setSavedProfile(profile);
     setEditing(false);
   };
@@ -139,7 +156,7 @@ export default function UserProfilePage() {
             {/* Instrument Selection */}
             <div className="flex flex-col items-center w-full">
               <label htmlFor="instruments" className="text-xl text-[#7A5FB3] mb-2">
-                Instruments:
+                Instrument(s):
               </label>
               <select
                 id="instruments"
@@ -161,7 +178,7 @@ export default function UserProfilePage() {
             {/* Genre Selection */}
             <div className="flex flex-col items-center w-full">
               <label htmlFor="genres" className="text-xl text-[#7A5FB3] mb-2">
-                Genres:
+                Genre(s):
               </label>
               <select
                 id="genres"
@@ -189,7 +206,7 @@ export default function UserProfilePage() {
                 id="bio"
                 value={profile.bio}
                 onChange={handleBioChange}
-                placeholder="Tell us about yourself..."
+                placeholder="Tell us about yourself and what band you're looking to create/join!"
                 required
                 className="w-full max-w-md px-4 py-2 rounded-2xl border-2 border-[#B9A9DE] font-serif text-[#4B3F72] focus:outline-none focus:ring-2 focus:ring-[#B9A9DE] transition"
                 rows={4}
@@ -211,32 +228,20 @@ export default function UserProfilePage() {
               alt="Profile"
               className="w-32 h-32 rounded-full object-cover mb-2"
             />
-            <h2 className="text-3xl text-[#7A5FB3] font-bold">{savedProfile?.name}</h2>
-            <div className="text-xl text-[#A694D6]">
-              Instruments:{" "}
-              <span className="font-semibold text-[#5D4197]">
-                {savedProfile?.instruments.join(", ")}
-              </span>
-            </div>
-            <div className="text-xl text-[#A694D6]">
-              Genres:{" "}
-              <span className="font-semibold text-[#5D4197]">
-                {savedProfile?.genres.join(", ")}
-              </span>
-            </div>
-            <div className="text-lg text-[#4B3F72] mt-2 whitespace-pre-line text-center max-w-xl">
-              {savedProfile?.bio}
-            </div>
+            <h2 className="text-3xl font-bold text-[#5D4197]">{savedProfile?.name}</h2>
+            <p className="text-xl text-[#7A5FB3]">
+              Instrument(s): {savedProfile?.instruments?.join(", ") || "None"}
+            </p>
+            <p className="text-xl text-[#7A5FB3]">
+              Genre(s): {savedProfile?.genres?.join(", ") || "None"}
+            </p>
+            <p className="text-lg text-[#4B3F72] text-center whitespace-pre-line">{savedProfile?.bio}</p>
             <button
               onClick={handleEdit}
-              className="mt-4 px-6 py-2 bg-[#B9A9DE] text-[#5D4197] rounded-full font-semibold shadow hover:bg-[#C8B8E5] transition"
+              className="absolute top-4 right-4 px-4 py-1 bg-[#B9A9DE] text-[#5D4197] rounded-full font-semibold text-sm shadow hover:bg-[#C8B8E5] transition"
             >
               Edit Profile
             </button>
-            {/* @ cadence footer */}
-            <div className="w-full mt-8 flex justify-center">
-              <span className="text-[#5D4197] text-sm font-semibold tracking-wide">@ cadence</span>
-            </div>
           </div>
         )}
       </section>
