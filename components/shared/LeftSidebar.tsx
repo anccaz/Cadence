@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { SignOutButton, SignedIn, useAuth } from "@clerk/nextjs";
+import { SignOutButton, SignedIn } from "@clerk/nextjs";
 import { sidebarLinks } from "@/constants";
 
 const LeftSidebar = () => {
@@ -18,25 +18,25 @@ const LeftSidebar = () => {
       {/* Navigation links */}
       <div className="flex flex-col gap-6 px-4 pt-16">
         {sidebarLinks.map((link) => {
-          // Always use the static route from the constants
           const route = link.route;
-          const isActive =
-            (pathname.includes(route) && route.length > 1) || pathname === route;
+          const isActive = pathname === route;
 
           return (
             <Link
               href={route}
               key={link.label}
-              className={`flex items-center gap-6 px-6 py-6 rounded-lg transition-colors duration-200 font-serif text-gray-200
+              className={`flex items-center gap-6 px-6 py-6 rounded-lg transition-colors duration-200 font-serif
                 ${
                   isActive
-                    ? "bg-purple-900"
-                    : "hover:bg-purple-700"
-                }`}
+                    ? "bg-[#B9A9DE] text-[#4B3F72]"
+                    : "text-white"
+                }
+                hover:bg-[#D6CBEF] hover:text-[#4B3F72]"
+              `}
               style={{ fontSize: "1.2rem" }}
             >
               <Image src={link.imgURL} alt={link.label} width={24} height={24} />
-              <span className="font-serif text-gray-200 whitespace-nowrap max-lg:hidden" style={{ fontSize: "1.2rem" }}>
+              <span className="font-serif whitespace-nowrap max-lg:hidden" style={{ fontSize: "1.2rem" }}>
                 {link.label}
               </span>
             </Link>
@@ -48,9 +48,9 @@ const LeftSidebar = () => {
       <div className="px-4 pb-8">
         <SignedIn>
           <SignOutButton signOutCallback={() => router.push("/sign-in")}>
-            <div className="flex cursor-pointer gap-4 p-4 rounded-lg hover:bg-red-900 transition">
+            <div className="flex cursor-pointer gap-4 p-4 rounded-lg transition font-serif text-white hover:bg-[#B9A9DE] hover:text-[#4B3F72]">
               <Image src="/assets/logout.svg" alt="logout" width={24} height={24} />
-              <span className="font-serif text-gray-200" style={{ fontSize: "1.2rem" }}>
+              <span className="font-serif" style={{ fontSize: "1.2rem" }}>
                 Logout
               </span>
             </div>
