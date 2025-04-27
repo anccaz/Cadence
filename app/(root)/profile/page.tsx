@@ -40,7 +40,7 @@ type Profile = {
   bio: string;
 };
 
-const defaultProfileImage = "/profile.png"; // Path to your profile.png
+const defaultProfileImage = "/profile.png";
 
 export default function UserProfilePage() {
   const [profile, setProfile] = useState<Profile>({
@@ -93,7 +93,7 @@ export default function UserProfilePage() {
   };
 
   return (
-    <main className="font-serif flex flex-col items-center w-full bg-gradient-to-br from-white via-[#b9a9de] to-[#8C70C4] pt-16 pb-44">
+    <main className="font-serif flex flex-col items-center w-full bg-gradient-to-br from-white via-[#b9a9de] to-[#8C70C4] pt-16 pb-44 min-h-screen">
       <section className="w-full max-w-4xl mt-12 mb-12 px-4 mx-auto">
         <h1 className="text-5xl font-extrabold text-[#8C70C4] mb-10 text-center">
           <span className="text-[#5D4197]">{editing ? "Create" : "Your"}</span> Profile
@@ -205,7 +205,7 @@ export default function UserProfilePage() {
             </button>
           </form>
         ) : (
-          <div className="bg-white rounded-3xl overflow-hidden shadow-lg border-4 border-[#D6CBEF] flex flex-col items-center p-8 gap-4">
+          <div className="bg-white rounded-3xl overflow-hidden shadow-lg border-4 border-[#D6CBEF] flex flex-col items-center p-8 gap-4 relative">
             <img
               src={savedProfile?.image || defaultProfileImage}
               alt="Profile"
@@ -233,6 +233,10 @@ export default function UserProfilePage() {
             >
               Edit Profile
             </button>
+            {/* @ cadence footer */}
+            <div className="w-full mt-8 flex justify-center">
+              <span className="text-[#5D4197] text-sm font-semibold tracking-wide">@ cadence</span>
+            </div>
           </div>
         )}
       </section>

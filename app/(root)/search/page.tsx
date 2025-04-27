@@ -100,11 +100,6 @@ export default function SearchPage() {
           )}
         </div>
       </section>
-
-      {/* Optional: Footer for consistency */}
-      <footer className="w-full py-8 text-center text-[#5D4197] text-sm">
-        &copy; {new Date().getFullYear()} Cadence. Not affiliated with UT Dallas.
-      </footer>
     </main>
   );
 }
