@@ -9,7 +9,6 @@ import { sidebarLinks } from "@/constants";
 const LeftSidebar = () => {
   const router = useRouter();
   const pathname = usePathname();
-  const { userId } = useAuth();
 
   return (
     <section
@@ -19,8 +18,8 @@ const LeftSidebar = () => {
       {/* Navigation links */}
       <div className="flex flex-col gap-6 px-4 pt-16">
         {sidebarLinks.map((link) => {
-          const route =
-            link.route === "/profile" ? `${link.route}/${userId}` : link.route;
+          // Always use the static route from the constants
+          const route = link.route;
           const isActive =
             (pathname.includes(route) && route.length > 1) || pathname === route;
 
