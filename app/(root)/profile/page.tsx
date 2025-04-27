@@ -206,7 +206,7 @@ export default function UserProfilePage() {
                 id="bio"
                 value={profile.bio}
                 onChange={handleBioChange}
-                placeholder="Tell us about yourself and what band you're looking to create/join!"
+                placeholder="Tell us about yourself and what band you're looking create/join"
                 required
                 className="w-full max-w-md px-4 py-2 rounded-2xl border-2 border-[#B9A9DE] font-serif text-[#4B3F72] focus:outline-none focus:ring-2 focus:ring-[#B9A9DE] transition"
                 rows={4}

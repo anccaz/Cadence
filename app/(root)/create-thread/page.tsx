@@ -30,6 +30,7 @@ const genreOptions = [
   "Folk",
   "Blues",
   "Metal",
+  "Reggae",
   "Other",
 ];
 
@@ -80,13 +81,13 @@ export default function CreatePostPage() {
           {/* Song Name */}
           <div className="flex flex-col items-center w-full">
             <label htmlFor="songName" className="text-xl text-[#7A5FB3] mb-2">
-              Song Name:
+              Song Name & Artist:
             </label>
             <input
               type="text"
               id="songName"
               className="w-full max-w-md px-4 py-2 rounded-full border-2 border-[#B9A9DE] font-serif text-[#4B3F72] focus:outline-none focus:ring-2 focus:ring-[#B9A9DE] transition"
-              placeholder="The Name of Your Song"
+              placeholder="The Name of the Song & Artist (ex. Hello by Adele)"
               value={songName}
               onChange={(e) => setSongName(e.target.value)}
               required

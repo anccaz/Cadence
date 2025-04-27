@@ -20,8 +20,8 @@ const fakeBands: Band[] = [
     genre: "Psychedelic Rock",
     members: [
       { name: "Jimi Hendrix", instrument: "Guitar/Vocals" },
-      { name: "Noel Redding", instrument: "Bass" },
-      { name: "Mitch Mitchell", instrument: "Drums" },
+      { name: "Noel Ghosh", instrument: "Bass" },
+      { name: "Mitch Jain", instrument: "Drums" },
     ],
   },
   {
@@ -29,9 +29,9 @@ const fakeBands: Band[] = [
     name: "Crimson Shadows",
     genre: "Gothic Metal",
     members: [
-      { name: "Aliza Crimson", instrument: "Vocals" },
+      { name: "Aliza Kumar", instrument: "Vocals" },
       { name: "Victor Shadow", instrument: "Guitar" },
-      { name: "Eve Nightfall", instrument: "Keyboards" },
+      { name: "Isha Jindal", instrument: "Keyboards" },
       { name: "Sam Blackwood", instrument: "Drums" },
     ],
   },
@@ -41,7 +41,7 @@ const fakeBands: Band[] = [
     genre: "Synthwave",
     members: [
       { name: "Rina Synth", instrument: "Synthesizer/Vocals" },
-      { name: "Kai Wave", instrument: "Synthesizer" },
+      { name: "Kai Liu", instrument: "Synthesizer" },
     ],
   },
   {
@@ -49,9 +49,9 @@ const fakeBands: Band[] = [
     name: "Ironclad Giants",
     genre: "Stoner Rock",
     members: [
-      { name: "Thor Stone", instrument: "Guitar/Vocals" },
-      { name: "Magnus Iron", instrument: "Bass" },
-      { name: "Astrid Giant", instrument: "Drums" },
+      { name: "Ginny Stone", instrument: "Guitar/Vocals" },
+      { name: "Magnus Agarwal", instrument: "Bass" },
+      { name: "Astrid Smith", instrument: "Drums" },
     ],
   },
   {
@@ -59,8 +59,8 @@ const fakeBands: Band[] = [
     name: "Velvet Echoes",
     genre: "Dream Pop",
     members: [
-      { name: "Lila Velvet", instrument: "Vocals/Guitar" },
-      { name: "Finn Echo", instrument: "Bass/Keys" },
+      { name: "Lila Patel", instrument: "Vocals/Guitar" },
+      { name: "Jerry Echo", instrument: "Bass/Keys" },
     ],
   },
   {
@@ -69,8 +69,8 @@ const fakeBands: Band[] = [
     genre: "Noise Rock",
     members: [
       { name: "Rex Static", instrument: "Guitar/Vocals" },
-      { name: "Ava Void", instrument: "Bass" },
-      { name: "Onyx Glitch", instrument: "Electronics" },
+      { name: "Ava Gupta", instrument: "Bass" },
+      { name: "Vihaan Chen", instrument: "Electronics" },
     ],
   },
   {
@@ -78,7 +78,7 @@ const fakeBands: Band[] = [
     name: "Lunar Bloom",
     genre: "Indie Folk",
     members: [
-      { name: "Celeste Moon", instrument: "Vocals/Guitar" },
+      { name: "Ava Choi", instrument: "Vocals/Guitar" },
       { name: "Rowan Bloom", instrument: "Banjo/Mandolin" },
     ],
   },
@@ -87,9 +87,9 @@ const fakeBands: Band[] = [
     name: "Electric Nomads",
     genre: "Desert Rock",
     members: [
-      { name: "Dusty Roads", instrument: "Guitar/Vocals" },
+      { name: "Bernice Roads", instrument: "Guitar/Vocals" },
       { name: "Sandy Beats", instrument: "Drums" },
-      { name: "Cactus Green", instrument: "Bass" },
+      { name: "Cindy Kim", instrument: "Bass" },
     ],
   },
   {
@@ -97,8 +97,8 @@ const fakeBands: Band[] = [
     name: "Spectral Hues",
     genre: "Progressive Electronic",
     members: [
-      { name: "Indra Spectrum", instrument: "Synthesizers" },
-      { name: "Cyan Shift", instrument: "Programming" },
+      { name: "Indra Gupta", instrument: "Synthesizers" },
+      { name: "Cyan Sato", instrument: "Programming" },
     ],
   },
 ];
