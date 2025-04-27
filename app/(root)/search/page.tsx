@@ -52,8 +52,9 @@ export default function SearchPage() {
   );
 
   return (
-    <main className="font-serif w-full bg-gradient-to-br from-white via-[#b9a9de] to-[#8C70C4] pt-16 pb-44">
-      <section className="max-w-4xl mx-auto mt-12 px-4">
+    <main className="font-serif flex flex-col items-center w-full bg-gradient-to-br from-white via-[#b9a9de] to-[#8C70C4] pt-16 pb-44">
+      {/* Search Section */}
+      <section className="w-full max-w-4xl mt-12 mb-12 px-4 mx-auto">
         <h1 className="text-5xl font-extrabold text-[#8C70C4] mb-10 text-center">
           <span className="text-[#5D4197]">Search</span> for Bands
         </h1>
@@ -67,6 +68,10 @@ export default function SearchPage() {
             style={{ fontSize: "2rem" }}
           />
         </div>
+      </section>
+
+      {/* Filtered Bands */}
+      <section className="w-full max-w-5xl px-4 mb-16 mx-auto">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
           {filteredBands.length > 0 ? (
             filteredBands.map((band, idx) => (
@@ -95,6 +100,11 @@ export default function SearchPage() {
           )}
         </div>
       </section>
+
+      {/* Optional: Footer for consistency */}
+      <footer className="w-full py-8 text-center text-[#5D4197] text-sm">
+        &copy; {new Date().getFullYear()} Cadence. Not affiliated with UT Dallas.
+      </footer>
     </main>
   );
 }
