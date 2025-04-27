@@ -9,7 +9,7 @@ export const metadata = {
   description: "App description",
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
@@ -21,7 +21,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <div className="page-content" style={{ flex: 1 }}>
                 {children}
               </div>
-              <Bottombar />
             </div>
           </div>
         </ClerkProvider>
