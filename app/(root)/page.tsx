@@ -24,9 +24,9 @@ const sampleBands = [
 
 export default function HomePage() {
   return (
-    <main className="font-serif flex flex-col min-h-screen w-full bg-gradient-to-br from-white via-[#b9a9de] to-[#8C70C4] ml-64">
+    <main className="font-serif flex flex-col items-center w-full bg-gradient-to-br from-white via-[#b9a9de] to-[#8C70C4] pt-16 pb-44">
       {/* Hero Section */}
-      <section className="w-full max-w-4xl mt-24 mb-12 px-4 mx-auto">
+      <section className="w-full max-w-4xl mb-12 px-4 mx-auto">
         <h1 className="text-5xl font-extrabold text-[#8C70C4] drop-shadow-lg mb-6 text-center">
           Find Your Band at <span className="text-[#5D4197]">UT Dallas</span>
         </h1>
