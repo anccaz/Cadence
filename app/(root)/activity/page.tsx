@@ -1,19 +1,13 @@
 "use client";
 import React, { useEffect, useState } from "react";
 
-type Comment = {
-  id: string;
-  text: string;
-  createdAt: number;
-};
-
 type Post = {
   id: string;
   instruments: string[];
   songName: string;
   genre: string;
   createdAt: number;
-  comments: Comment[];
+  interestedMusicians: string[];
 };
 
 function getPostsFromStorage(): Post[] {
@@ -36,35 +30,38 @@ function savePostsToStorage(posts: Post[]) {
 
 export default function ActivityPage() {
   const [posts, setPosts] = useState<Post[]>([]);
-  const [commentInputs, setCommentInputs] = useState<{ [postId: string]: string }>({});
+  const [profileName, setProfileName] = useState<string | null>(null);
 
   useEffect(() => {
     const initialPosts = getPostsFromStorage();
     setPosts(initialPosts);
+    const storedProfile = localStorage.getItem("userProfile");
+    if (storedProfile) {
+      const profile = JSON.parse(storedProfile);
+      setProfileName(profile.name);
+    }
   }, []);
 
-  const handleCommentChange = (postId: string, event: React.ChangeEvent<HTMLInputElement>) => {
-    setCommentInputs({
-      ...commentInputs,
-      [postId]: event.target.value,
-    });
-  };
-
-  const handleCommentSubmit = (postId: string) => {
-    const commentText = commentInputs[postId]?.trim();
-    if (!commentText) return;
-
-    const newComment = {
-      id: Date.now().toString(),
-      text: commentText,
-      createdAt: Date.now(),
-    };
+  const handleInterestedClick = (postId: string) => {
+    if (!profileName) {
+      alert("Please create a profile before expressing interest.");
+      return;
+    }
 
     const updatedPosts = posts.map(post => {
       if (post.id === postId) {
+        const isInterested = post.interestedMusicians?.includes(profileName);
+        let updatedInterestedMusicians = post.interestedMusicians ? [...post.interestedMusicians] : [];
+
+        if (isInterested) {
+          updatedInterestedMusicians = updatedInterestedMusicians.filter(name => name !== profileName);
+        } else {
+          updatedInterestedMusicians.push(profileName);
+        }
+
         return {
           ...post,
-          comments: [...(post.comments || []), newComment],
+          interestedMusicians: updatedInterestedMusicians,
         };
       }
       return post;
@@ -72,7 +69,6 @@ export default function ActivityPage() {
 
     setPosts(updatedPosts);
     savePostsToStorage(updatedPosts);
-    setCommentInputs({ ...commentInputs, [postId]: "" });
   };
 
   return (
@@ -101,36 +97,29 @@ export default function ActivityPage() {
                 <p className="text-lg text-[#4B3F72]">
                   Genre: {post.genre}
                 </p>
-                {/* Comment Input */}
                 <div className="flex flex-col items-center w-full mt-4">
-                  <input
-                    type="text"
-                    placeholder="Add a comment..."
-                    className="w-full max-w-md px-4 py-2 rounded-full border-2 border-[#B9A9DE] font-serif text-[#4B3F72] focus:outline-none focus:ring-2 focus:ring-[#B9A9DE] transition"
-                    value={commentInputs[post.id] || ""}
-                    onChange={(event) => handleCommentChange(post.id, event)}
-                  />
                   <button
-                    onClick={() => handleCommentSubmit(post.id)}
+                    onClick={() => handleInterestedClick(post.id)}
                     className="mt-2 px-4 py-1 bg-[#B9A9DE] text-[#5D4197] rounded-full font-semibold text-sm shadow hover:bg-[#C8B8E5] transition"
                   >
-                    Post Comment
+                    {post.interestedMusicians?.includes(profileName)
+                      ? "Remove Interest"
+                      : "Express Interest"}
                   </button>
+
+                  {post.interestedMusicians && post.interestedMusicians.length > 0 && (
+                    <div className="w-full mt-2">
+                      <h4 className="text-[#8C70C4] font-bold mb-1 text-sm">Interested Musicians:</h4>
+                      <ul className="list-disc pl-5">
+                        {post.interestedMusicians.map((musician, index) => (
+                          <li key={index} className="text-sm text-[#4B3F72]">
+                            {musician}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
                 </div>
-                {/* Display Comments */}
-                {post.comments && post.comments.length > 0 && (
-                  <div className="w-full mt-4">
-                    <h4 className="text-[#8C70C4] font-bold mb-2 text-sm">Comments:</h4>
-                    {post.comments.map((comment) => (
-                      <div key={comment.id} className="mb-2 p-2 rounded-md bg-[#F3F0FA]">
-                        <p className="text-sm text-[#4B3F72]">{comment.text}</p>
-                        <p className="text-xs text-[#A694D6]">
-                          Posted on {new Date(comment.createdAt).toLocaleString()}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                )}
               </div>
             ))}
           </div>
