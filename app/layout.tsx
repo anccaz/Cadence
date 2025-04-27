@@ -14,11 +14,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body>
         <ClerkProvider>
-          <div className="app-container">
+          <div className="app-container" style={{ display: "flex", minHeight: "100vh" }}>
             <LeftSidebar />
-            <div className="main-content">
+            <div className="main-content" style={{ flex: 1, display: "flex", flexDirection: "column" }}>
               <Topbar />
-              <div className="page-content">
+              <div className="page-content" style={{ flex: 1 }}>
                 {children}
               </div>
               <Bottombar />
