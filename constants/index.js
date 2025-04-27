@@ -18,7 +18,7 @@ export const sidebarLinks = [
       // label was Create Thread
       imgURL: "/assets/create.svg",
       route: "/create-thread",
-      label: "Create a Post",
+      label: "Find a Band",
     },
     {
       // label was Communities

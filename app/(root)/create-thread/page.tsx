@@ -1,84 +1,60 @@
 "use client";
-import React, { useRef, useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 
-// Define the Profile type
-type Profile = {
-  name: string;
-  image: string;
-  instruments: string[];
-  genres: string[];
-  bio: string;
-};
+const instrumentOptions = [
+  "Guitar",
+  "Bass",
+  "Drums",
+  "Vocals",
+  "Keyboards",
+  "Piano",
+  "Synthesizer",
+  "Violin",
+  "Cello",
+  "Trumpet",
+  "Saxophone",
+  "Flute",
+  "Clarinet",
+  "Other",
+];
+
+const genreOptions = [
+  "Rock",
+  "Pop",
+  "Hip Hop",
+  "Electronic",
+  "Jazz",
+  "Classical",
+  "Country",
+  "Folk",
+  "Blues",
+  "Metal",
+  "Other",
+];
 
 export default function CreatePostPage() {
-  const [text, setText] = useState("");
-  const [image, setImage] = useState<string | null>(null);
-  const [fileName, setFileName] = useState<string>("No file selected");
+  const [instruments, setInstruments] = useState<string[]>([]);
+  const [songName, setSongName] = useState("");
+  const [genre, setGenre] = useState("");
   const [error, setError] = useState("");
-  const fileInputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
-
-  const [profile, setProfile] = useState<Profile | null>(null);
-
-  // Load profile from localStorage on component mount
-  useEffect(() => {
-    const storedProfile = localStorage.getItem("userProfile");
-    if (storedProfile) {
-      setProfile(JSON.parse(storedProfile));
-    } else {
-      // Redirect to profile page if no profile is found
-      router.push("/profile");
-    }
-  }, [router]);
-
-  // Convert image to base64 for localStorage and store file name
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) {
-      setImage(null);
-      setFileName("No file selected");
-      return;
-    }
-    setFileName(file.name);
-    const reader = new FileReader();
-    reader.onload = () => setImage(reader.result as string);
-    reader.readAsDataURL(file);
-  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!text.trim()) {
-      setError("Please enter some text for your post.");
-      return;
-    }
-    if (!image) {
-      setError("Please upload an image.");
+    if (!instruments.length || !songName.trim() || !genre) {
+      setError("Please fill in all fields.");
       return;
     }
     setError("");
 
-    // Check if profile is available
-    if (!profile) {
-      setError("Please create a profile before creating a post.");
-      return;
-    }
-
-    // Save post to localStorage
-    const postId = Date.now().toString(); // Unique ID for the post
+    // Save post to localStorage (instruments, songName, genre)
     const post = {
-      id: postId,
-      text,
-      image,
+      instruments,
+      songName,
+      genre,
       createdAt: Date.now(),
-      likes: 0,
-      liked: false,
-      comments: [],
-      userName: profile.name,
-      userImage: profile.image,
     };
-
-    // Get existing posts, add the new post, and save
     const existingPosts = JSON.parse(localStorage.getItem("activity_posts") || "[]");
     localStorage.setItem("activity_posts", JSON.stringify([post, ...existingPosts]));
 
@@ -86,66 +62,89 @@ export default function CreatePostPage() {
     router.push("/activity");
   };
 
+  const handleInstrumentChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedOptions = Array.from(e.target.selectedOptions, (option) => option.value);
+    setInstruments(selectedOptions);
+  };
+
   return (
     <main className="font-serif flex flex-col items-center w-full bg-gradient-to-br from-white via-[#b9a9de] to-[#8C70C4] pt-16 pb-44">
       <section className="w-full max-w-3xl mt-12 mb-12 px-4 mx-auto">
         <h1 className="text-5xl font-extrabold text-[#8C70C4] mb-10 text-center">
-          <span className="text-[#5D4197]">Create</span> a Post
+          <span className="text-[#5D4197]">Find</span> Band Members
         </h1>
-        {profile ? (
-          <form
-            className="bg-white rounded-3xl shadow-lg border-4 border-[#D6CBEF] p-8 flex flex-col gap-8 items-center"
-            onSubmit={handleSubmit}
-          >
-            <textarea
-              className="w-full min-h-[120px] resize-none rounded-xl px-4 py-3 font-serif text-lg border-2 border-[#B9A9DE] focus:outline-none focus:ring-2 focus:ring-[#B9A9DE] transition"
-              placeholder="Start the conversation here!"
-              value={text}
-              onChange={(e) => setText(e.target.value)}
-              maxLength={500}
+        <form
+          className="bg-white rounded-3xl shadow-lg border-4 border-[#D6CBEF] p-8 flex flex-col gap-8 items-center"
+          onSubmit={handleSubmit}
+        >
+          {/* Song Name */}
+          <div className="flex flex-col items-center w-full">
+            <label htmlFor="songName" className="text-xl text-[#7A5FB3] mb-2">
+              Song Name:
+            </label>
+            <input
+              type="text"
+              id="songName"
+              className="w-full max-w-md px-4 py-2 rounded-full border-2 border-[#B9A9DE] font-serif text-[#4B3F72] focus:outline-none focus:ring-2 focus:ring-[#B9A9DE] transition"
+              placeholder="The Name of Your Song"
+              value={songName}
+              onChange={(e) => setSongName(e.target.value)}
+              required
             />
-            <div className="w-full flex flex-col items-center gap-2">
-              <input
-                type="file"
-                accept="image/*"
-                ref={fileInputRef}
-                onChange={handleImageChange}
-                className="hidden"
-                id="image-upload"
-              />
-              <button
-                type="button"
-                onClick={() => fileInputRef.current?.click()}
-                className="px-6 py-2 bg-[#B9A9DE] text-[#5D4197] rounded-full font-semibold text-lg shadow hover:bg-[#C8B8E5] transition"
-              >
-                {image ? "Change Image" : "Upload Image"}
-              </button>
-              <p className="text-center text-[#4B3F72] font-serif mt-1 max-w-xs truncate">
-                {fileName}
-              </p>
-              {image && (
-                <img
-                  src={image}
-                  alt="Preview"
-                  className="max-h-48 rounded-xl border-2 border-[#B9A9DE] object-cover mt-4"
-                />
-              )}
-            </div>
-            {error && (
-              <div className="w-full text-center text-red-500 font-semibold">{error}</div>
-            )}
-            <button
-              type="submit"
-              className="px-8 py-3 bg-[#B9A9DE] text-[#5D4197] rounded-full font-semibold text-lg shadow hover:bg-[#C8B8E5] transition"
-            >
-              Post
-            </button>
-          </form>
-        ) : (
-          <div className="text-center text-[#4B3F72] text-2xl font-serif mt-16">
-            Loading profile... Please create a profile first.
           </div>
-        )}
+
+          {/* Instrument(s) Needed */}
+          <div className="flex flex-col items-center w-full">
+            <label htmlFor="instruments" className="text-xl text-[#7A5FB3] mb-2">
+              Instrument(s) Needed:
+            </label>
+            <select
+              id="instruments"
+              multiple
+              className="w-full max-w-md px-4 py-2 rounded-full border-2 border-[#B9A9DE] font-serif text-[#4B3F72] focus:outline-none focus:ring-2 focus:ring-[#B9A9DE] transition"
+              value={instruments}
+              onChange={handleInstrumentChange}
+              required
+            >
+              {instrumentOptions.map((option) => (
+                <option key={option} value={option}>
+                  {option}
+                </option>
+              ))}
+            </select>
+            <span className="text-xs text-[#A694D6] mt-1">(Hold Ctrl/Cmd to select multiple)</span>
+          </div>
+
+          {/* Genre */}
+          <div className="flex flex-col items-center w-full">
+            <label htmlFor="genre" className="text-xl text-[#7A5FB3] mb-2">
+              Genre:
+            </label>
+            <select
+              id="genre"
+              className="w-full max-w-md px-4 py-2 rounded-full border-2 border-[#B9A9DE] font-serif text-[#4B3F72] focus:outline-none focus:ring-2 focus:ring-[#B9A9DE] transition"
+              value={genre}
+              onChange={(e) => setGenre(e.target.value)}
+              required
+            >
+              {genreOptions.map((option) => (
+                <option key={option} value={option}>
+                  {option}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {error && (
+            <div className="w-full text-center text-red-500 font-semibold">{error}</div>
+          )}
+          <button
+            type="submit"
+            className="px-8 py-3 bg-[#B9A9DE] text-[#5D4197] rounded-full font-semibold text-lg shadow hover:bg-[#C8B8E5] transition"
+          >
+            Create Post
+          </button>
+        </form>
       </section>
     </main>
   );
