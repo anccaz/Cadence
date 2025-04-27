@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+import { useRouter } from 'next/navigation';
 
 const sampleBands = [
   {
@@ -23,6 +24,12 @@ const sampleBands = [
 ];
 
 export default function HomePage() {
+  const router = useRouter(); // Instantiate useRouter *inside* the component
+
+  const handleGetStartedClick = () => {
+    router.push('/profile');
+  };
+
   return (
     <main className="font-serif flex flex-col items-center w-full bg-gradient-to-br from-white via-[#b9a9de] to-[#8C70C4] pt-16 pb-44">
       {/* Hero Section */}
@@ -34,7 +41,10 @@ export default function HomePage() {
           Meet fellow Comets, form bands, and create music you love. Whether you play, sing, or produce, discover your next bandmates right here on campus!
         </p>
         <div className="flex justify-center">
-          <button className="px-8 py-4 bg-[#B9A9DE] text-[#5D4197] rounded-full font-semibold text-lg shadow-lg hover:bg-[#C8B8E5] transition">
+          <button
+            className="px-8 py-4 bg-[#B9A9DE] text-[#5D4197] rounded-full font-semibold text-lg shadow-lg hover:bg-[#C8B8E5] transition"
+            onClick={handleGetStartedClick} // Add the onClick handler
+          >
             Get Started
           </button>
         </div>
