@@ -182,10 +182,11 @@ const AccountProfile = ({user, btnTitle}: Props) =>  {
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                    <SelectItem value="vocals">Vocals</SelectItem>
-                    <SelectItem value="guitar">Guitar</SelectItem>
-                    <SelectItem value="bass">Bass</SelectItem>
-                    <SelectItem value="drums">Drums</SelectItem>
+                    <SelectItem value="rock">Rock</SelectItem>
+                    <SelectItem value="pop">Pop</SelectItem>
+                    <SelectItem value="metal">Metal</SelectItem>
+                    <SelectItem value="jazz">Jazz</SelectItem>
+                    <SelectItem value="funk">Funk</SelectItem>
                 </SelectContent>
               </Select>
               <FormDescription>
