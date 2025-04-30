@@ -18,11 +18,12 @@ async function Page() {
         instrument: userInfo?.instrument || ""
     } //Visit this again when we need to actually set up user info from database
 
-    return(<main className ="mx-auto flex max-w-3xl flex-col justify-start px-10 py-20">
-        <h1 className="font-bold font-serif text-gray-200 tracking-tight">
+    return(<main className="font-serif flex flex-col items-center w-full bg-gradient-to-br from-white via-[#b9a9de] to-[#8C70C4] pt-16 pb-44">
+        <h1 className="font-extrabold font-serif text-[#5D4197] tracking-tight">
             Onboarding
         </h1>  
-        <p className = "font-serif text-gray-200 tracking-tight">
+
+        <p className = "font-bold font-serif text-[#5D4197] tracking-tight ">
             Complete your profile now to use Cadence 
         </p> 
 
