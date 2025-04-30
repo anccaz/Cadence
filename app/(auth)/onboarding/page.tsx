@@ -19,7 +19,7 @@ async function Page() {
     } //Visit this again when we need to actually set up user info from database
 
     return(<main className="font-serif flex flex-col items-center w-full bg-gradient-to-br from-white via-[#b9a9de] to-[#8C70C4] pt-16 pb-44">
-        <h1 className="font-extrabold font-serif text-[#5D4197] tracking-tight">
+        <h1 className="text-5xl font-extrabold text-[#8C70C4] drop-shadow-lg mb-6 text-center">
             Onboarding
         </h1>  
 

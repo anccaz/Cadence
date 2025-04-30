@@ -24,6 +24,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import Image from 'next/image'
+import {useRouter} from "next/navigation"
 
 import {useForm} from 'react-hook-form';
 //import {Form} from '@/components/ui/form';
@@ -54,7 +55,7 @@ const AccountProfile = ({user, btnTitle}: Props) =>  {
   const [files ,setfiles] = useState<File[]>([])
   const{startUpload} = useUploadThing("media")
   const randomID = Math.floor(Math.random() * (128 - 0 + 1));
-
+  const router = useRouter();
 
   const form = useForm({resolver: zodResolver(UserValidation), //schema
       defaultValues: {
@@ -99,6 +100,8 @@ const AccountProfile = ({user, btnTitle}: Props) =>  {
 
           return;
         }
+
+
         
         try{ //POST Request
           console.log(values)
@@ -109,6 +112,8 @@ const AccountProfile = ({user, btnTitle}: Props) =>  {
           console.error("Error w/ submission", error)
           alert("Submission Failure")
         }
+
+        router.push("/")
 
       }catch(error){
         console.error('Error: ', error);
@@ -124,7 +129,7 @@ const AccountProfile = ({user, btnTitle}: Props) =>  {
             control={form.control}
             name="profile_photo"
             render={({ field }) => (
-              <FormItem className = "flex items-center gap-4 text-[#5D4197]">
+              <FormItem className = "flex items-center gap-4 text-[#5D4197] ">
                 <FormLabel className = "account-form_image-label text-[#5D4197]"> {field.value?
                 (<Image
                 src = {field.value}
@@ -147,7 +152,7 @@ const AccountProfile = ({user, btnTitle}: Props) =>  {
                   type = "file"
                   accept = "image/*" 
                   placeholder = "Upload a photo"
-                  className = "account-form_image-input text-[#5D4197] border-4 border-[#D6CBEF]" 
+                  className = "account-form_image-input data-[placeholder]:placeholder:text-[#5D4197] border-4 border-[#D6CBEF]" 
                   onChange = {(e)=> handleImage(e, field.onChange)}
                   />
                 </FormControl>
@@ -206,11 +211,18 @@ const AccountProfile = ({user, btnTitle}: Props) =>  {
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                    <SelectItem value="rock">Rock</SelectItem>
-                    <SelectItem value="pop">Pop</SelectItem>
-                    <SelectItem value="metal">Metal</SelectItem>
-                    <SelectItem value="jazz">Jazz</SelectItem>
-                    <SelectItem value="funk">Funk</SelectItem>
+                  <SelectItem value="Rock">Rock</SelectItem>
+                  <SelectItem value="Pop">Pop</SelectItem>
+                  <SelectItem value="Hip Hop">Hip-Hop</SelectItem>
+                  <SelectItem value="Electronic">Electronic</SelectItem>
+                  <SelectItem value="Jazz">Jazz</SelectItem>
+                  <SelectItem value="Classical">Classical</SelectItem>
+                  <SelectItem value="Country">Country</SelectItem>
+                  <SelectItem value="Folk">Folk</SelectItem>
+                  <SelectItem value="Metal">Metal</SelectItem>
+                  <SelectItem value="Blues">Blues</SelectItem>
+                  <SelectItem value="Reggae">Reggae</SelectItem>
+                  <SelectItem value="Other">Other</SelectItem>
                 </SelectContent>
               </Select>
               <FormDescription>
@@ -233,11 +245,28 @@ const AccountProfile = ({user, btnTitle}: Props) =>  {
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                    <SelectItem value="vocals">Vocals</SelectItem>
-                    <SelectItem value="guitar">Guitar</SelectItem>
-                    <SelectItem value="bass">Bass</SelectItem>
-                    <SelectItem value="keyboard">Keyboard</SelectItem>
-                    <SelectItem value="drums">Drums</SelectItem>
+                    <SelectItem value="Guitar">Guitar</SelectItem>
+                    <SelectItem value="Bass">Bass</SelectItem>
+                    <SelectItem value="Drums">Drums</SelectItem>
+                    <SelectItem value="Vocals">Vocals</SelectItem>
+                    <SelectItem value="Keyboard">Keyboard</SelectItem>
+                    <SelectItem value="Piano">Piano</SelectItem>
+                    <SelectItem value="Synthesizer">Synthesizer</SelectItem>
+                    <SelectItem value="Banjo">Banjo</SelectItem>
+                    <SelectItem value="Ukulele">Ukulele</SelectItem>
+                    <SelectItem value="Violin">Violin</SelectItem>
+                    <SelectItem value="Viola">Viola</SelectItem>
+                    <SelectItem value="Cello">Cello</SelectItem>
+                    <SelectItem value="Harp">Harp</SelectItem>
+                    <SelectItem value="Trumpet">Trumpet</SelectItem>
+                    <SelectItem value="Trombone">Trombone</SelectItem>
+                    <SelectItem value="Tuba">Tuba</SelectItem>
+                    <SelectItem value="Bassoon">Bassoon</SelectItem>
+                    <SelectItem value="Oboe">Oboe</SelectItem>
+                    <SelectItem value="Saxophone">Saxophone</SelectItem>
+                    <SelectItem value="Flute">Flute</SelectItem>
+                    <SelectItem value="Clarinet">Clarinet</SelectItem>
+                    <SelectItem value="Other">Other</SelectItem>
                 </SelectContent>
               </Select>
               <FormDescription>
@@ -255,5 +284,4 @@ const AccountProfile = ({user, btnTitle}: Props) =>  {
       </Form>
     )
   }
-
 export default AccountProfile;
