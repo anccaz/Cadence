@@ -5,7 +5,7 @@ const dbConfig = {
   user: process.env.AZURE_SQL_USER || 'sysAdmin',
   password: process.env.AZURE_SQL_PASSWORD || 'p4ss-w0rd',
   server: process.env.AZURE_SQL_SERVER || 'cadencedatabases.database.windows.net',
-  database: process.env.AZURE_SQL_DATABASE || 'Users',
+  database: process.env.AZURE_SQL_DATABASE || 'Listings',
   options: {
     encrypt: true, // Mandatory for Azure
     trustServerCertificate: false, // Important for production
