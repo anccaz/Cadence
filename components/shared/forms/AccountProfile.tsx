@@ -92,23 +92,23 @@ const AccountProfile = ({user, btnTitle}: Props) =>  {
     }
 
     return (
-        <Form {...form}>
+        <Form {...form} >
         <form onSubmit={form.handleSubmit(onSubmit)} 
-        className="flex flex-col justify-start gap-10"
+        className= "bg-white rounded-3xl overflow-hidden shadow-lg border-4 border-[#D6CBEF] flex flex-col items-center p-6 gap-4"
         >
-          <FormField
+          <FormField 
             control={form.control}
             name="profile_photo"
             render={({ field }) => (
-              <FormItem className = "flex items-center gap-4">
-                <FormLabel className = "account-form_image-label">{field.value?
+              <FormItem className = "flex items-center gap-4 text-[#5D4197]">
+                <FormLabel className = "account-form_image-label text-[#5D4197]"> {field.value?
                 (<Image
                 src = {field.value}
                 alt = "profile photo"
                 width = {96}
                 height = {96}
                 priority
-                className = "rounded-full object-contain"
+                className = "rounded-full object-contain text-[#5D4197]"
                 />
                 ): (<Image
                   src = "/assets/profile.svg"
@@ -118,12 +118,12 @@ const AccountProfile = ({user, btnTitle}: Props) =>  {
                   className = "object-contain"
                   />)}
               </FormLabel>
-                <FormControl className= "flex-1 text-base-semibold text-gray-200">
+                <FormControl className= "flex-1 text-base-semibold text-[#5D4197] border-4 border-[#D6CBEF]">
                   <Input 
                   type = "file"
                   accept = "image/*" 
                   placeholder = "Upload a photo"
-                  className = "account-form_image-input" 
+                  className = "account-form_image-input text-[#5D4197] border-4 border-[#D6CBEF]" 
                   onChange = {(e)=> handleImage(e, field.onChange)}
                   />
                 </FormControl>
@@ -135,14 +135,14 @@ const AccountProfile = ({user, btnTitle}: Props) =>  {
             control={form.control}
             name="name"
             render={({ field }) => (
-              <FormItem className = "flex flex-col w-full gap-3">
-                <FormLabel className = "text-base-semibold text-light-2">
+              <FormItem className = "flex flex-col w-full gap-3 ">
+                <FormLabel className = "text-base-semibold text-[#5D4197]">
                 Name 
               </FormLabel>
                 <FormControl>
                   <Input 
                   type= "text"
-                  className = "account-form_input no-focus" 
+                  className = "account-form_input no-focus text-[#5D4197] border-4 border-[#D6CBEF]" 
                   {...field}
                   />
                 </FormControl>
@@ -155,13 +155,13 @@ const AccountProfile = ({user, btnTitle}: Props) =>  {
             name="username"
             render={({ field }) => (
               <FormItem className = "flex flex-col w-full gap-3">
-                <FormLabel className = "text-base-semibold text-light-2">
+                <FormLabel className = "text-base-semibold text-[#5D4197] ">
                 Username
               </FormLabel>
                 <FormControl>
                   <Input 
                   type= "text"
-                  className = "account-form_input no-focus" 
+                  className = "account-form_input no-focus text-[#5D4197] border-4 border-[#D6CBEF]" 
                   {...field}
                   />
                 </FormControl>
@@ -174,11 +174,11 @@ const AccountProfile = ({user, btnTitle}: Props) =>  {
           name="genre"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Favorite Genre</FormLabel>
+              <FormLabel className = "text-[#5D4197]">Favorite Genre</FormLabel>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
-                <FormControl>
-                  <SelectTrigger className="w-[500px]">
-                    <SelectValue placeholder="Select your favorite music genre" />
+                <FormControl className = "border-4 border-[#D6CBEF]">
+                  <SelectTrigger className="w-[500px] text-[#5D4197] ">
+                    <SelectValue placeholder="Select your favorite music genre" className = "text-[#5D4197]"/>
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
@@ -201,11 +201,11 @@ const AccountProfile = ({user, btnTitle}: Props) =>  {
           name="instrument"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Preferred Instrument</FormLabel>
+              <FormLabel className = "text-[#5D4197]">Preferred Instrument</FormLabel>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
-                <FormControl>
-                  <SelectTrigger className="w-[500px]">
-                    <SelectValue placeholder="Select your primary instrument" />
+                <FormControl className = "border-4 border-[#D6CBEF]">
+                  <SelectTrigger className="w-[500px] text-[#5D4197]">
+                    <SelectValue className = "text-[#5D4197]" placeholder="Select your primary instrument"  />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
