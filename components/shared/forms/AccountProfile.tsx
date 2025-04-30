@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
@@ -33,12 +33,15 @@ import * as z from "zod";
 import { ChangeEvent, useState } from "react"
 import { isBase64Image } from "@/lib/utils"
 import {useUploadThing} from "@/lib/uploadthing"
+import axios from 'axios'
+import { useUser } from '@clerk/clerk-react'
 
 interface Props {
     user: {
         id: string;
         objectId: string;
         username: string;
+        email: string;
         name: string;
         image: string;
         genre: string;
@@ -48,16 +51,20 @@ interface Props {
 }
 
 const AccountProfile = ({user, btnTitle}: Props) =>  {
- const [files ,setfiles] = useState<File[]>([])
- const{startUpload} = useUploadThing("media")
+  const [files ,setfiles] = useState<File[]>([])
+  const{startUpload} = useUploadThing("media")
+  const randomID = Math.floor(Math.random() * (128 - 0 + 1));
 
-  const form = useForm({resolver: zodResolver(UserValidation),
+
+  const form = useForm({resolver: zodResolver(UserValidation), //schema
       defaultValues: {
       profile_photo: user?.image || "",
+      email: user?.email || "",
       name: user?.name || '',
       username: user?.username || '',
       instrument: user?.instrument||'',
       genre: user?.genre || "",
+      id: randomID,
       }
   })
 
@@ -80,14 +87,31 @@ const AccountProfile = ({user, btnTitle}: Props) =>  {
   }
  
   const onSubmit = async (values: z.infer<typeof UserValidation>) => {
-      const blob = values.profile_photo;
-      const hasImageChanged = isBase64Image(blob);
-      if(hasImageChanged){
-        const imgRes = await startUpload(files)
+      try{
+        const blob = values.profile_photo; //Image handling
+        const hasImageChanged = isBase64Image(blob);
+        if(hasImageChanged){
+          const imgRes = await startUpload(files)
 
-        if(imgRes && imgRes[0].ufsUrl){
-          values.profile_photo = imgRes[0].ufsUrl;
+          if(imgRes && imgRes[0].ufsUrl){
+            values.profile_photo = imgRes[0].ufsUrl;
+          }
+
+          return;
         }
+        
+        try{ //POST Request
+          console.log(values)
+
+          const response = await axios.post("/api/userPOST", values)
+          alert("Submission Success")
+        }catch (error){
+          console.error("Error w/ submission", error)
+          alert("Submission Failure")
+        }
+
+      }catch(error){
+        console.error('Error: ', error);
       }
     }
 
