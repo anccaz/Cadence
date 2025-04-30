@@ -30,15 +30,21 @@ function savePostsToStorage(posts: Post[]) {
 
 export default function ActivityPage() {
   const [posts, setPosts] = useState<Post[]>([]);
-  const [profileName, setProfileName] = useState<string | null>(null);
+  const [profileName, setProfileName] = useState<string>(""); // default to empty string
 
   useEffect(() => {
     const initialPosts = getPostsFromStorage();
     setPosts(initialPosts);
     const storedProfile = localStorage.getItem("userProfile");
     if (storedProfile) {
-      const profile = JSON.parse(storedProfile);
-      setProfileName(profile.name);
+      try {
+        const profile = JSON.parse(storedProfile);
+        setProfileName(typeof profile.name === "string" ? profile.name : "");
+      } catch (error) {
+        setProfileName("");
+      }
+    } else {
+      setProfileName("");
     }
   }, []);
 
@@ -50,8 +56,8 @@ export default function ActivityPage() {
 
     const updatedPosts = posts.map(post => {
       if (post.id === postId) {
-        const isInterested = post.interestedMusicians?.includes(profileName);
-        let updatedInterestedMusicians = post.interestedMusicians ? [...post.interestedMusicians] : [];
+        const isInterested = post.interestedMusicians.includes(profileName);
+        let updatedInterestedMusicians = [...post.interestedMusicians];
 
         if (isInterested) {
           updatedInterestedMusicians = updatedInterestedMusicians.filter(name => name !== profileName);
@@ -102,7 +108,7 @@ export default function ActivityPage() {
                     onClick={() => handleInterestedClick(post.id)}
                     className="mt-2 px-4 py-1 bg-[#B9A9DE] text-[#5D4197] rounded-full font-semibold text-sm shadow hover:bg-[#C8B8E5] transition"
                   >
-                    {post.interestedMusicians?.includes(profileName)
+                    {profileName && post.interestedMusicians.includes(profileName)
                       ? "Remove Interest"
                       : "Express Interest"}
                   </button>
