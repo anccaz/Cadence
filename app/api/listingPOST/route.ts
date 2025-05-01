@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import sql from 'mssql';
 
+
 // Helper to ensure env variables are defined
 function getEnv(name: string): string {
   const value = process.env[name];

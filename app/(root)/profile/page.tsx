@@ -1,250 +1,232 @@
-"use client";
-import React, { useEffect, useState } from "react";
+// app/listings/page.tsx
+'use client'
+import React, { useState, useEffect } from 'react'
+import axios from 'axios'
 
-const instrumentOptions = [
-  "Guitar",
-  "Harp",
-  "Banjo",
-  "Ukulele",
-  "Bassoon",
-  "Oboe",
-  "Bass",
-  "Drums",
-  "Vocals",
-  "Keyboards",
-  "Piano",
-  "Synthesizer",
-  "Violin",
-  "Viola",
-  "Cello",
-  "Trumpet",
-  "Saxophone",
-  "Flute",
-  "Clarinet",
-  "Other",
-];
+interface Listing {
+  id: number
+  creator: string
+  songName: string
+  genre: string
+  positions: string[]
+}
 
-const genreOptions = [
-  "Rock",
-  "Pop",
-  "Hip Hop",
-  "Electronic",
-  "Jazz",
-  "Classical",
-  "Country",
-  "Folk",
-  "Blues",
-  "Metal",
-  "Reggae",
-  "Other",
-];
+interface ApiResponse {
+  success: boolean
+  message?: string
+  listings?: Listing[]
+  count?: number
+}
 
-type Profile = {
-  name: string;
-  image: string;
-  instruments: string[];
-  genres: string[];
-  bio: string;
-};
-
-const defaultProfileImage = "/profile.png";
-
-export default function UserProfilePage() {
-  const [profile, setProfile] = useState<Profile>({
-    name: "",
-    image: defaultProfileImage,
-    instruments: [],
-    genres: [],
-    bio: "",
-  });
-  const [savedProfile, setSavedProfile] = useState<Profile | null>(null);
-  const [editing, setEditing] = useState(true);
+export default function ListingsPage() {
+  const [listings, setListings] = useState<Listing[]>([])
+  const [loading, setLoading] = useState<boolean>(true)
+  const [error, setError] = useState<string | null>(null)
+  const [searchParams, setSearchParams] = useState({
+    creator: '',
+    songName: '',
+    genre: '',
+    position: ''
+  })
 
   useEffect(() => {
-    const storedProfile = localStorage.getItem("userProfile");
-    if (storedProfile) {
-      setProfile(JSON.parse(storedProfile));
-      setSavedProfile(JSON.parse(storedProfile));
-      setEditing(false);
+    fetchListings()
+  }, [])
+
+  const fetchListings = async (params = searchParams): Promise<void> => {
+    setLoading(true);
+    setError(null);
+  
+    try {
+      const queryString = new URLSearchParams();
+      if (params.creator) queryString.append('creator', params.creator);
+      if (params.songName) queryString.append('songName', params.songName);
+      if (params.genre) queryString.append('genre', params.genre);
+      if (params.position) queryString.append('position', params.position);
+  
+      const url = `/api/listings?${queryString.toString()}`;
+      console.log('Making request to:', url);
+  
+      const res = await axios.get<ApiResponse>(url);
+      console.log('API Response:', res.data);
+  
+      if (!res.data.success) {
+        throw new Error(res.data.message || 'Request failed');
+      }
+  
+      setListings(res.data.listings || []);
+    } catch (err) {
+      console.error('Full error:', err);
+      if (axios.isAxiosError(err)) {
+        setError(`Error ${err.response?.status}: ${err.response?.data?.message || err.message}`);
+      } else if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError('An unknown error occurred');
+      }
+    } finally {
+      setLoading(false);
     }
-  }, []);
-
-  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setProfile({ ...profile, name: e.target.value });
   };
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setProfile({ ...profile, image: reader.result as string });
-      };
-      reader.readAsDataURL(file);
-    }
-  };
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    const { name, value } = e.target
+    setSearchParams(prev => ({
+      ...prev,
+      [name]: value
+    }))
+  }
 
-  const handleInstrumentChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedOptions = Array.from(e.target.selectedOptions, (option) => option.value);
-    setProfile({ ...profile, instruments: selectedOptions });
-  };
+  const handleSearch = (e: React.FormEvent): void => {
+    e.preventDefault()
+    fetchListings()
+  }
 
-  const handleGenreChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedOptions = Array.from(e.target.selectedOptions, (option) => option.value);
-    setProfile({ ...profile, genres: selectedOptions });
-  };
-
-  const handleBioChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setProfile({ ...profile, bio: e.target.value });
-  };
-
-  const handleSave = (e: React.FormEvent) => {
-    e.preventDefault();
-    localStorage.setItem("userProfile", JSON.stringify(profile));
-    setSavedProfile(profile);
-    setEditing(false);
-  };
-
-  const handleEdit = () => {
-    setEditing(true);
-  };
+  const handleReset = (): void => {
+    setSearchParams({
+      creator: '',
+      songName: '',
+      genre: '',
+      position: ''
+    })
+    fetchListings({
+      creator: '',
+      songName: '',
+      genre: '',
+      position: ''
+    })
+  }
 
   return (
-    <main className="font-serif flex flex-col items-center w-full bg-gradient-to-br from-white via-[#b9a9de] to-[#8C70C4] pt-16 pb-44 min-h-screen">
-      <section className="w-full max-w-4xl mt-12 mb-12 px-4 mx-auto">
-        <h1 className="text-5xl font-extrabold text-[#8C70C4] mb-10 text-center">
-          <span className="text-[#5D4197]">{editing ? "Create" : "Your"}</span> Profile
-        </h1>
-        {editing ? (
-          <form
-            onSubmit={handleSave}
-            className="bg-white rounded-3xl overflow-hidden shadow-lg border-4 border-[#D6CBEF] flex flex-col items-center p-6 gap-4"
-          >
-            {/* Name Input */}
-            <div className="flex flex-col items-center w-full">
-              <label htmlFor="name" className="text-xl text-[#7A5FB3] mb-2">
-                Name:
-              </label>
-              <input
-                type="text"
-                id="name"
-                value={profile.name}
-                onChange={handleNameChange}
-                placeholder="Your Name"
-                required
-                className="w-full max-w-md px-4 py-2 rounded-full border-2 border-[#B9A9DE] font-serif text-[#4B3F72] focus:outline-none focus:ring-2 focus:ring-[#B9A9DE] transition"
-              />
-            </div>
-            {/* Image Upload */}
-            <div className="flex flex-col items-center">
-              <img
-                src={profile.image}
-                alt="Profile"
-                className="w-32 h-32 rounded-full object-cover mb-2"
-              />
-              <label className="px-4 py-1 bg-[#B9A9DE] text-[#5D4197] rounded-full font-semibold text-sm shadow hover:bg-[#C8B8E5] transition cursor-pointer">
-                Upload Image
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageUpload}
-                  className="hidden"
-                />
-              </label>
-            </div>
-
-            {/* Instrument Selection */}
-            <div className="flex flex-col items-center w-full">
-              <label htmlFor="instruments" className="text-xl text-[#7A5FB3] mb-2">
-                Instrument(s):
-              </label>
-              <select
-                id="instruments"
-                multiple
-                value={profile.instruments}
-                onChange={handleInstrumentChange}
-                required
-                className="w-full max-w-md px-4 py-2 rounded-full border-2 border-[#B9A9DE] font-serif text-[#4B3F72] focus:outline-none focus:ring-2 focus:ring-[#B9A9DE] transition"
-              >
-                {instrumentOptions.map((instrument) => (
-                  <option key={instrument} value={instrument}>
-                    {instrument}
-                  </option>
-                ))}
-              </select>
-              <span className="text-xs text-[#A694D6] mt-1">(Hold Ctrl/Cmd to select multiple)</span>
-            </div>
-
-            {/* Genre Selection */}
-            <div className="flex flex-col items-center w-full">
-              <label htmlFor="genres" className="text-xl text-[#7A5FB3] mb-2">
-                Genre(s):
-              </label>
-              <select
-                id="genres"
-                multiple
-                value={profile.genres}
-                onChange={handleGenreChange}
-                required
-                className="w-full max-w-md px-4 py-2 rounded-full border-2 border-[#B9A9DE] font-serif text-[#4B3F72] focus:outline-none focus:ring-2 focus:ring-[#B9A9DE] transition"
-              >
-                {genreOptions.map((genre) => (
-                  <option key={genre} value={genre}>
-                    {genre}
-                  </option>
-                ))}
-              </select>
-              <span className="text-xs text-[#A694D6] mt-1">(Hold Ctrl/Cmd to select multiple)</span>
-            </div>
-
-            {/* Bio */}
-            <div className="flex flex-col items-center w-full">
-              <label htmlFor="bio" className="text-xl text-[#7A5FB3] mb-2">
-                Bio:
-              </label>
-              <textarea
-                id="bio"
-                value={profile.bio}
-                onChange={handleBioChange}
-                placeholder="Tell us about yourself and what band you're looking create/join..."
-                required
-                className="w-full max-w-md px-4 py-2 rounded-2xl border-2 border-[#B9A9DE] font-serif text-[#4B3F72] focus:outline-none focus:ring-2 focus:ring-[#B9A9DE] transition"
-                rows={4}
-              ></textarea>
-            </div>
-
-            {/* Submit Button */}
-            <button
-              type="submit"
-              className="px-6 py-2 bg-[#5D4197] text-white rounded-full font-semibold shadow hover:bg-[#4B3F72] transition"
-            >
-              Save Profile
-            </button>
-          </form>
-        ) : (
-          <div className="bg-white rounded-3xl overflow-hidden shadow-lg border-4 border-[#D6CBEF] flex flex-col items-center p-8 gap-4 relative">
-            <img
-              src={savedProfile?.image || defaultProfileImage}
-              alt="Profile"
-              className="w-32 h-32 rounded-full object-cover mb-2"
+    <div style={{ maxWidth: '800px', margin: '0 auto', padding: '20px' }}>
+      <h1>Listing Search</h1>
+      
+      {/* Search form */}
+      <form onSubmit={handleSearch} style={{ marginBottom: '20px' }}>
+        <div style={{ display: 'grid', gap: '15px' }}>
+          <div>
+            <label htmlFor="creator" style={{ display: 'block', marginBottom: '5px' }}>Creator:</label>
+            <input
+              type="text"
+              id="creator"
+              name="creator"
+              placeholder="Search by creator"
+              value={searchParams.creator}
+              onChange={handleInputChange}
+              style={{ padding: '8px', width: '100%' }}
             />
-            <h2 className="text-3xl font-bold text-[#5D4197]">{savedProfile?.name}</h2>
-            <p className="text-xl text-[#7A5FB3]">
-              Instrument(s): {savedProfile?.instruments?.join(", ") || "None"}
-            </p>
-            <p className="text-xl text-[#7A5FB3]">
-              Genre(s): {savedProfile?.genres?.join(", ") || "None"}
-            </p>
-            <p className="text-lg text-[#4B3F72] text-center whitespace-pre-line">{savedProfile?.bio}</p>
-            <button
-              onClick={handleEdit}
-              className="absolute top-4 right-4 px-4 py-1 bg-[#B9A9DE] text-[#5D4197] rounded-full font-semibold text-sm shadow hover:bg-[#C8B8E5] transition"
+          </div>
+          
+          <div>
+            <label htmlFor="songName" style={{ display: 'block', marginBottom: '5px' }}>Song Name:</label>
+            <input
+              type="text"
+              id="songName"
+              name="songName"
+              placeholder="Search by song name"
+              value={searchParams.songName}
+              onChange={handleInputChange}
+              style={{ padding: '8px', width: '100%' }}
+            />
+          </div>
+          
+          <div>
+            <label htmlFor="genre" style={{ display: 'block', marginBottom: '5px' }}>Genre:</label>
+            <input
+              type="text"
+              id="genre"
+              name="genre"
+              placeholder="Search by genre"
+              value={searchParams.genre}
+              onChange={handleInputChange}
+              style={{ padding: '8px', width: '100%' }}
+            />
+          </div>
+          
+          <div>
+            <label htmlFor="position" style={{ display: 'block', marginBottom: '5px' }}>Position:</label>
+            <input
+              type="text"
+              id="position"
+              name="position"
+              placeholder="Search by position (e.g., Guitar, Drums)"
+              value={searchParams.position}
+              onChange={handleInputChange}
+              style={{ padding: '8px', width: '100%' }}
+            />
+          </div>
+          
+          <div style={{ display: 'flex', gap: '10px' }}>
+            <button 
+              type="submit"
+              style={{ 
+                padding: '8px 16px', 
+                background: '#0070f3', 
+                color: 'white', 
+                border: 'none', 
+                borderRadius: '4px',
+                cursor: 'pointer'
+              }}
             >
-              Edit Profile
+              Search
+            </button>
+            <button 
+              type="button"
+              onClick={handleReset}
+              style={{ 
+                padding: '8px 16px', 
+                background: '#666', 
+                color: 'white', 
+                border: 'none', 
+                borderRadius: '4px',
+                cursor: 'pointer'
+              }}
+            >
+              Reset
             </button>
           </div>
-        )}
-      </section>
-    </main>
-  );
+        </div>
+      </form>
+      
+      {/* Loading and error states */}
+      {loading && <p>Loading listings...</p>}
+      {error && (
+        <div style={{ 
+          padding: '10px', 
+          background: '#ffebee', 
+          borderLeft: '4px solid #f44336',
+          marginBottom: '20px'
+        }}>
+          <strong>Error:</strong> {error}
+        </div>
+      )}
+      
+      {/* Results */}
+      <div style={{ display: 'grid', gap: '20px' }}>
+        {listings.map(listing => (
+          <div key={`listing-${listing.id}`}
+            style={{ 
+              padding: '15px', 
+              border: '1px solid #ddd', 
+              borderRadius: '4px'
+            }}
+          >
+            <h3>Song: {listing.songName || 'Not available'}</h3>
+            <p>Creator: {listing.creator || 'N/A'}</p>
+            <p>Genre: {listing.genre || 'N/A'}</p>
+            <p>Positions Needed:</p>
+            <ul>
+              {listing.positions.map((pos, index) => (
+                <li key={`pos-${listing.id}-${index}`}>{pos}</li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+        
+      {!loading && listings.length === 0 && (
+        <p>No listings found matching your search criteria</p>
+      )}
+    </div>
+  )
 }

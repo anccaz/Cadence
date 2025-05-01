@@ -1,3 +1,4 @@
+// lib/db.ts
 import sql from 'mssql';
 
 const dbConfig: sql.config = {

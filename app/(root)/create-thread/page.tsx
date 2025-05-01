@@ -3,35 +3,13 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 
 const instrumentOptions = [
-  "Guitar",
-  "Bass",
-  "Drums",
-  "Vocals",
-  "Keyboards",
-  "Piano",
-  "Synthesizer",
-  "Violin",
-  "Cello",
-  "Trumpet",
-  "Saxophone",
-  "Flute",
-  "Clarinet",
-  "Other",
+  "Guitar", "Bass", "Drums", "Vocals", "Keyboards", "Piano", "Synthesizer",
+  "Violin", "Cello", "Trumpet", "Saxophone", "Flute", "Clarinet", "Other",
 ];
 
 const genreOptions = [
-  "Rock",
-  "Pop",
-  "Hip Hop",
-  "Electronic",
-  "Jazz",
-  "Classical",
-  "Country",
-  "Folk",
-  "Blues",
-  "Metal",
-  "Reggae",
-  "Other",
+  "Rock", "Pop", "Hip Hop", "Electronic", "Jazz", "Classical", "Country",
+  "Folk", "Blues", "Metal", "Reggae", "Other",
 ];
 
 export default function CreatePostPage() {
@@ -49,17 +27,18 @@ export default function CreatePostPage() {
     }
     setError("");
 
-    // Save post to localStorage (instruments, songName, genre)
+    // Generate unique id
     const post = {
+      id: Date.now().toString(),
       instruments,
       songName,
       genre,
       createdAt: Date.now(),
+      comments: [] as { name: string; text: string }[],
     };
     const existingPosts = JSON.parse(localStorage.getItem("activity_posts") || "[]");
     localStorage.setItem("activity_posts", JSON.stringify([post, ...existingPosts]));
 
-    // Redirect to activity page
     router.push("/activity");
   };
 
@@ -93,7 +72,6 @@ export default function CreatePostPage() {
               required
             />
           </div>
-
           {/* Instrument(s) Needed */}
           <div className="flex flex-col items-center w-full">
             <label htmlFor="instruments" className="text-xl text-[#7A5FB3] mb-2">
@@ -115,7 +93,6 @@ export default function CreatePostPage() {
             </select>
             <span className="text-xs text-[#A694D6] mt-1">(Hold Ctrl/Cmd to select multiple)</span>
           </div>
-
           {/* Genre */}
           <div className="flex flex-col items-center w-full">
             <label htmlFor="genre" className="text-xl text-[#7A5FB3] mb-2">
@@ -135,7 +112,6 @@ export default function CreatePostPage() {
               ))}
             </select>
           </div>
-
           {error && (
             <div className="w-full text-center text-red-500 font-semibold">{error}</div>
           )}

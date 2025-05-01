@@ -1,13 +1,19 @@
 "use client";
 import React, { useEffect, useState } from "react";
 
+type Comment = {
+  name: string;
+  text: string;
+  createdAt: number;
+};
+
 type Post = {
   id: string;
   instruments: string[];
   songName: string;
   genre: string;
   createdAt: number;
-  interestedMusicians: string[];
+  comments: Comment[];
 };
 
 function getPostsFromStorage(): Post[] {
@@ -30,44 +36,39 @@ function savePostsToStorage(posts: Post[]) {
 
 export default function ActivityPage() {
   const [posts, setPosts] = useState<Post[]>([]);
-  const [profileName, setProfileName] = useState<string>(""); // default to empty string
+  const [commentInputs, setCommentInputs] = useState<Record<string, { name: string; text: string }>>({});
 
   useEffect(() => {
     const initialPosts = getPostsFromStorage();
     setPosts(initialPosts);
-    const storedProfile = localStorage.getItem("userProfile");
-    if (storedProfile) {
-      try {
-        const profile = JSON.parse(storedProfile);
-        setProfileName(typeof profile.name === "string" ? profile.name : "");
-      } catch (error) {
-        setProfileName("");
-      }
-    } else {
-      setProfileName("");
-    }
   }, []);
 
-  const handleInterestedClick = (postId: string) => {
-    if (!profileName) {
-      alert("Please create a profile before expressing interest.");
+  const handleCommentChange = (postId: string, field: "name" | "text", value: string) => {
+    setCommentInputs((inputs) => ({
+      ...inputs,
+      [postId]: {
+        ...inputs[postId],
+        [field]: value,
+      },
+    }));
+  };
+
+  const handleCommentSubmit = (postId: string, e: React.FormEvent) => {
+    e.preventDefault();
+    const comment = commentInputs[postId];
+    if (!comment || !comment.name.trim() || !comment.text.trim()) {
+      alert("Please enter your name and a comment.");
       return;
     }
 
     const updatedPosts = posts.map(post => {
       if (post.id === postId) {
-        const isInterested = post.interestedMusicians.includes(profileName);
-        let updatedInterestedMusicians = [...post.interestedMusicians];
-
-        if (isInterested) {
-          updatedInterestedMusicians = updatedInterestedMusicians.filter(name => name !== profileName);
-        } else {
-          updatedInterestedMusicians.push(profileName);
-        }
-
         return {
           ...post,
-          interestedMusicians: updatedInterestedMusicians,
+          comments: [
+            ...post.comments,
+            { name: comment.name.trim(), text: comment.text.trim(), createdAt: Date.now() }
+          ]
         };
       }
       return post;
@@ -75,6 +76,12 @@ export default function ActivityPage() {
 
     setPosts(updatedPosts);
     savePostsToStorage(updatedPosts);
+
+    // Clear the comment input for this post
+    setCommentInputs(inputs => ({
+      ...inputs,
+      [postId]: { name: "", text: "" }
+    }));
   };
 
   return (
@@ -103,27 +110,44 @@ export default function ActivityPage() {
                 <p className="text-lg text-[#4B3F72]">
                   Genre: {post.genre}
                 </p>
-                <div className="flex flex-col items-center w-full mt-4">
-                  <button
-                    onClick={() => handleInterestedClick(post.id)}
-                    className="mt-2 px-4 py-1 bg-[#B9A9DE] text-[#5D4197] rounded-full font-semibold text-sm shadow hover:bg-[#C8B8E5] transition"
+                {/* Comments Section */}
+                <div className="w-full mt-6">
+                  <h3 className="text-lg font-bold text-[#8C70C4] mb-2">Comments</h3>
+                  <form
+                    className="flex flex-col md:flex-row gap-2 items-center mb-4"
+                    onSubmit={e => handleCommentSubmit(post.id, e)}
                   >
-                    {profileName && post.interestedMusicians.includes(profileName)
-                      ? "Remove Interest"
-                      : "Express Interest"}
-                  </button>
-
-                  {post.interestedMusicians && post.interestedMusicians.length > 0 && (
-                    <div className="w-full mt-2">
-                      <h4 className="text-[#8C70C4] font-bold mb-1 text-sm">Interested Musicians:</h4>
-                      <ul className="list-disc pl-5">
-                        {post.interestedMusicians.map((musician, index) => (
-                          <li key={index} className="text-sm text-[#4B3F72]">
-                            {musician}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
+                    <input
+                      type="text"
+                      placeholder="Your name"
+                      value={commentInputs[post.id]?.name || ""}
+                      onChange={e => handleCommentChange(post.id, "name", e.target.value)}
+                      className="px-3 py-1 rounded-full border-2 border-[#B9A9DE] font-serif text-[#4B3F72] focus:outline-none focus:ring-2 focus:ring-[#B9A9DE] transition w-40"
+                    />
+                    <input
+                      type="text"
+                      placeholder="Leave a comment..."
+                      value={commentInputs[post.id]?.text || ""}
+                      onChange={e => handleCommentChange(post.id, "text", e.target.value)}
+                      className="px-3 py-1 rounded-full border-2 border-[#B9A9DE] font-serif text-[#4B3F72] focus:outline-none focus:ring-2 focus:ring-[#B9A9DE] transition w-64"
+                    />
+                    <button
+                      type="submit"
+                      className="px-4 py-1 bg-[#B9A9DE] text-[#5D4197] rounded-full font-semibold text-sm shadow hover:bg-[#C8B8E5] transition"
+                    >
+                      Comment
+                    </button>
+                  </form>
+                  {post.comments && post.comments.length > 0 ? (
+                    <ul className="w-full">
+                      {post.comments.map((c, idx) => (
+                        <li key={idx} className="mb-2 text-[#4B3F72]">
+                          <span className="font-semibold">{c.name}</span>: {c.text}
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <div className="text-sm text-[#A694D6]">No comments yet.</div>
                   )}
                 </div>
               </div>
