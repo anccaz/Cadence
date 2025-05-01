@@ -10,7 +10,11 @@ export async function GET(request: Request) {
     const genre = searchParams.get('genre') || '';
     const instrument = searchParams.get('instrument') || '';
 
-    pool = await connectToDatabase();
+    pool = await connectToDatabase(process.env.AZURE_SQL_DATABASE_USERS!);
+
+    // Debug: Confirm correct DB
+    const dbNameResult = await pool.request().query('SELECT DB_NAME() AS dbname');
+    console.log('USERS API: Connected to database:', dbNameResult.recordset[0].dbname);
 
     let query = 'SELECT UserId, Username, Email, GenrePref, InstrumentPref FROM dbo.UserTableReal1 WHERE 1=1';
     const requestObj = pool.request();

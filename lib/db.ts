@@ -1,13 +1,11 @@
-// lib/db.ts
 import sql from 'mssql';
 
-const dbConfig: sql.config = {
+const baseConfig = {
   user: process.env.AZURE_SQL_USER,
   password: process.env.AZURE_SQL_PASSWORD,
   server: process.env.AZURE_SQL_SERVER,
-  database: process.env.AZURE_SQL_DATABASE,
   options: {
-    encrypt: true, // Required for Azure
+    encrypt: true,
     trustServerCertificate: false,
     connectTimeout: 30000,
     requestTimeout: 30000,
@@ -20,17 +18,12 @@ const dbConfig: sql.config = {
   }
 };
 
-let pool: sql.ConnectionPool | null = null;
+const pools: { [dbName: string]: sql.ConnectionPool } = {};
 
-export async function connectToDatabase() {
-  if (pool && pool.connected) return pool;
-  pool = await new sql.ConnectionPool(dbConfig).connect();
+export async function connectToDatabase(databaseName: string) {
+  if (pools[databaseName] && pools[databaseName].connected) return pools[databaseName];
+  const config = { ...baseConfig, database: databaseName };
+  const pool = await new sql.ConnectionPool(config).connect();
+  pools[databaseName] = pool;
   return pool;
-}
-
-export async function closeConnection() {
-  if (pool && pool.connected) {
-    await pool.close();
-    pool = null;
-  }
 }
