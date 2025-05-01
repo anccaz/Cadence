@@ -1,9 +1,9 @@
 "use client";
 import React, { useEffect, useState } from "react";
 
-type Comment = {
+type InterestedUser = {
   name: string;
-  text: string;
+  contact: string;
   createdAt: number;
 };
 
@@ -13,7 +13,7 @@ type Post = {
   songName: string;
   genre: string;
   createdAt: number;
-  comments: Comment[];
+  interested?: InterestedUser[];
 };
 
 function getPostsFromStorage(): Post[] {
@@ -36,15 +36,30 @@ function savePostsToStorage(posts: Post[]) {
 
 export default function ActivityPage() {
   const [posts, setPosts] = useState<Post[]>([]);
-  const [commentInputs, setCommentInputs] = useState<Record<string, { name: string; text: string }>>({});
+  const [interestInputs, setInterestInputs] = useState<Record<string, { name: string; contact: string }>>({});
 
   useEffect(() => {
-    const initialPosts = getPostsFromStorage();
+    const initialPosts = getPostsFromStorage().map(post => ({
+      ...post,
+      interested: Array.isArray(post.interested) ? post.interested : []
+    }));
     setPosts(initialPosts);
   }, []);
 
-  const handleCommentChange = (postId: string, field: "name" | "text", value: string) => {
-    setCommentInputs((inputs) => ({
+  // Validate name: exactly two words (first and last)
+  const isValidName = (name: string) => {
+    const parts = name.trim().split(/\s+/);
+    return parts.length === 2 && parts.every(part => part.length > 0);
+  };
+
+  // Validate UTD email ending with @utdallas.edu (case-insensitive)
+  const isValidUtdEmail = (email: string) => {
+    const utdEmailRegex = /^[a-zA-Z0-9._%+-]+@utdallas\.edu$/i;
+    return utdEmailRegex.test(email.trim());
+  };
+
+  const handleInterestChange = (postId: string, field: "name" | "contact", value: string) => {
+    setInterestInputs(inputs => ({
       ...inputs,
       [postId]: {
         ...inputs[postId],
@@ -53,11 +68,26 @@ export default function ActivityPage() {
     }));
   };
 
-  const handleCommentSubmit = (postId: string, e: React.FormEvent) => {
+  const handleInterestSubmit = (postId: string, e: React.FormEvent) => {
     e.preventDefault();
-    const comment = commentInputs[postId];
-    if (!comment || !comment.name.trim() || !comment.text.trim()) {
-      alert("Please enter your name and a comment.");
+    const interest = interestInputs[postId];
+    if (!interest) {
+      alert("Please enter your name and UTD email.");
+      return;
+    }
+    const name = interest.name.trim();
+    const contact = interest.contact.trim();
+
+    if (!name || !contact) {
+      alert("Please enter your name and UTD email.");
+      return;
+    }
+    if (!isValidName(name)) {
+      alert("Please enter your first and last name only.");
+      return;
+    }
+    if (!isValidUtdEmail(contact)) {
+      alert("Please enter a valid UTD email ending with @utdallas.edu.");
       return;
     }
 
@@ -65,9 +95,9 @@ export default function ActivityPage() {
       if (post.id === postId) {
         return {
           ...post,
-          comments: [
-            ...post.comments,
-            { name: comment.name.trim(), text: comment.text.trim(), createdAt: Date.now() }
+          interested: [
+            ...(Array.isArray(post.interested) ? post.interested : []),
+            { name, contact, createdAt: Date.now() }
           ]
         };
       }
@@ -77,10 +107,9 @@ export default function ActivityPage() {
     setPosts(updatedPosts);
     savePostsToStorage(updatedPosts);
 
-    // Clear the comment input for this post
-    setCommentInputs(inputs => ({
+    setInterestInputs(inputs => ({
       ...inputs,
-      [postId]: { name: "", text: "" }
+      [postId]: { name: "", contact: "" }
     }));
   };
 
@@ -96,62 +125,74 @@ export default function ActivityPage() {
           </div>
         ) : (
           <div className="flex flex-col gap-10">
-            {posts.map((post) => (
-              <div
-                key={post.id}
-                className="bg-white rounded-3xl overflow-hidden shadow-lg border-4 border-[#D6CBEF] flex flex-col items-center p-6"
-              >
-                <h2 className="text-2xl font-bold text-[#7A5FB3] mb-2">
-                  Song Name & Artist: {post.songName}
-                </h2>
-                <p className="text-xl text-[#A694D6] mb-1">
-                  Seeking: {post.instruments?.join(", ") || "No instruments specified"}
-                </p>
-                <p className="text-lg text-[#4B3F72]">
-                  Genre: {post.genre}
-                </p>
-                {/* Comments Section */}
-                <div className="w-full mt-6">
-                  <h3 className="text-lg font-bold text-[#8C70C4] mb-2">Comments</h3>
-                  <form
-                    className="flex flex-col md:flex-row gap-2 items-center mb-4"
-                    onSubmit={e => handleCommentSubmit(post.id, e)}
-                  >
-                    <input
-                      type="text"
-                      placeholder="Your name"
-                      value={commentInputs[post.id]?.name || ""}
-                      onChange={e => handleCommentChange(post.id, "name", e.target.value)}
-                      className="px-3 py-1 rounded-full border-2 border-[#B9A9DE] font-serif text-[#4B3F72] focus:outline-none focus:ring-2 focus:ring-[#B9A9DE] transition w-40"
-                    />
-                    <input
-                      type="text"
-                      placeholder="Leave a comment..."
-                      value={commentInputs[post.id]?.text || ""}
-                      onChange={e => handleCommentChange(post.id, "text", e.target.value)}
-                      className="px-3 py-1 rounded-full border-2 border-[#B9A9DE] font-serif text-[#4B3F72] focus:outline-none focus:ring-2 focus:ring-[#B9A9DE] transition w-64"
-                    />
-                    <button
-                      type="submit"
-                      className="px-4 py-1 bg-[#B9A9DE] text-[#5D4197] rounded-full font-semibold text-sm shadow hover:bg-[#C8B8E5] transition"
+            {posts.map(post => {
+              // Ensure each post has its own input state
+              const inputState = interestInputs[post.id] || { name: "", contact: "" };
+              return (
+                <div
+                  key={post.id}
+                  className="bg-white rounded-3xl overflow-hidden shadow-lg border-4 border-[#D6CBEF] flex flex-col items-center p-6"
+                >
+                  <h2 className="text-2xl font-bold text-[#7A5FB3] mb-2">
+                    Song Name & Artist: {post.songName}
+                  </h2>
+                  <p className="text-xl text-[#A694D6] mb-1">
+                    Seeking: {post.instruments?.join(", ") || "No instruments specified"}
+                  </p>
+                  <p className="text-lg text-[#4B3F72]">
+                    Genre: {post.genre}
+                  </p>
+
+                  {/* Interest Form */}
+                  <div className="w-full mt-6">
+                    <h3 className="text-lg font-bold text-[#8C70C4] mb-4">Express Interest</h3>
+                    <form
+                      className="flex flex-col md:flex-row gap-3 items-center mb-6"
+                      onSubmit={e => handleInterestSubmit(post.id, e)}
                     >
-                      Comment
-                    </button>
-                  </form>
-                  {post.comments && post.comments.length > 0 ? (
-                    <ul className="w-full">
-                      {post.comments.map((c, idx) => (
-                        <li key={idx} className="mb-2 text-[#4B3F72]">
-                          <span className="font-semibold">{c.name}</span>: {c.text}
-                        </li>
-                      ))}
-                    </ul>
-                  ) : (
-                    <div className="text-sm text-[#A694D6]">No comments yet.</div>
-                  )}
+                      <input
+                        type="text"
+                        placeholder="First Last Name"
+                        value={inputState.name}
+                        onChange={e => handleInterestChange(post.id, "name", e.target.value)}
+                        className="px-3 py-2 rounded-full border-2 border-[#B9A9DE] font-serif text-[#4B3F72] focus:outline-none focus:ring-2 focus:ring-[#B9A9DE] transition w-full md:w-48"
+                        maxLength={50}
+                      />
+                      <input
+                        type="email"
+                        placeholder="Your UTD email (e.g. jsmith@utdallas.edu)"
+                        value={inputState.contact}
+                        onChange={e => handleInterestChange(post.id, "contact", e.target.value)}
+                        className="px-3 py-2 rounded-full border-2 border-[#B9A9DE] font-serif text-[#4B3F72] focus:outline-none focus:ring-2 focus:ring-[#B9A9DE] transition w-full md:w-64"
+                        maxLength={100}
+                      />
+                      <button
+                        type="submit"
+                        className="px-6 py-2 bg-[#B9A9DE] text-[#5D4197] rounded-full font-semibold text-base shadow hover:bg-[#C8B8E5] transition whitespace-nowrap"
+                      >
+                        I'm Interested
+                      </button>
+                    </form>
+
+                    {/* Interested Users List */}
+                    <div className="border-t border-[#D6CBEF] pt-4">
+                      <h4 className="text-md font-semibold text-[#7A5FB3] mb-2">Who is Interested</h4>
+                      {post.interested && post.interested.length > 0 ? (
+                        <ul className="list-disc list-inside text-[#4B3F72] space-y-1">
+                          {post.interested.map((i, idx) => (
+                            <li key={idx}>
+                              {i.name} <span className="text-[#A694D6]">({i.contact.toLowerCase()})</span>
+                            </li>
+                          ))}
+                        </ul>
+                      ) : (
+                        <p className="text-sm text-[#A694D6]">No one has expressed interest yet.</p>
+                      )}
+                    </div>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
       </section>
