@@ -123,21 +123,21 @@ const AccountProfile = ({user, btnTitle}: Props) =>  {
     return (
         <Form {...form} >
         <form onSubmit={form.handleSubmit(onSubmit)} 
-        className= "bg-white rounded-3xl overflow-hidden shadow-lg border-4 border-[#D6CBEF] flex flex-col items-center p-6 gap-4"
+        className= "bg-white rounded-3xl overflow-hidden shadow-lg border-4 border-[#D6CBEF] flex flex-col items-center p-6 gap-4 "
         >
           <FormField 
             control={form.control}
             name="profile_photo"
             render={({ field }) => (
-              <FormItem className = "flex items-center gap-4 text-[#5D4197] ">
-                <FormLabel className = "account-form_image-label text-[#5D4197]"> {field.value?
+              <FormItem className = "flex items-center gap-4 ">
+                <FormLabel className = "account-form_image-label"> {field.value?
                 (<Image
                 src = {field.value}
                 alt = "profile photo"
                 width = {96}
                 height = {96}
                 priority
-                className = "rounded-full object-contain text-[#5D4197]"
+                className = "rounded-full object-contain"
                 />
                 ): (<Image
                   src = "/assets/profile.svg"
@@ -147,12 +147,12 @@ const AccountProfile = ({user, btnTitle}: Props) =>  {
                   className = "object-contain"
                   />)}
               </FormLabel>
-                <FormControl className= "flex-1 text-base-semibold text-[#5D4197] border-4 border-[#D6CBEF]">
+                <FormControl className= "flex-1 text-base-semibold text-[#5D4197] border-4 border-[#D6CBEF] ">
                   <Input 
                   type = "file"
                   accept = "image/*" 
                   placeholder = "Upload a photo"
-                  className = "account-form_image-input data-[placeholder]:placeholder:text-[#5D4197] border-4 border-[#D6CBEF]" 
+                  className = "account-form_image-input border-4 border-[#D6CBEF] " 
                   onChange = {(e)=> handleImage(e, field.onChange)}
                   />
                 </FormControl>
@@ -277,7 +277,6 @@ const AccountProfile = ({user, btnTitle}: Props) =>  {
           />
 
           <Button type="submit">Submit
-            <Link href="/"></Link>
           </Button>
           
         </form>
