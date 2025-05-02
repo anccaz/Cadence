@@ -45,7 +45,7 @@ export default function HomePage() {
             className="px-8 py-4 bg-[#B9A9DE] text-[#5D4197] rounded-full font-semibold text-lg shadow-lg hover:bg-[#C8B8E5] transition"
             onClick={handleGetStartedClick} // Add the onClick handler
           >
-            Get Started
+            Current Listings
           </button>
         </div>
       </section>
