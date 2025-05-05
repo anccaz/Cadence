@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import { connectToDatabase } from '@/lib/db';
 import sql from 'mssql';
 
+//written by: Luis Lopez
+
 export async function GET(request: Request) {
   let pool: sql.ConnectionPool | null = null;
   try {

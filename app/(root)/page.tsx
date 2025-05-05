@@ -2,6 +2,8 @@
 import React from "react";
 import { useRouter } from 'next/navigation';
 
+//written by: Annie Li
+
 const sampleBands = [
   {
     name: "Rolltide",

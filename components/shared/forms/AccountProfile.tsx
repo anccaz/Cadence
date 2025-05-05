@@ -37,7 +37,7 @@ import axios from 'axios'
 import { useUser } from '@clerk/clerk-react'
 
 
-//written by: Mitchell & Jeff
+//written by: Mitchell Vu & Jeffrey Billones
 interface Props {
     user: {
         id: string;

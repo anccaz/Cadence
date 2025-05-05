@@ -1,6 +1,7 @@
 import * as z from 'zod';
 
-//written by: Mitchell 
+//written by: Mitchell Vu 
+
 export const UserValidation = z.object({
     profile_photo: z.string().url().nonempty(),
     name: z.string().min(3).max(30),

@@ -6,6 +6,8 @@ import { usePathname, useRouter } from "next/navigation";
 import { SignedIn, SignOutButton } from "@clerk/nextjs";
 import { sidebarLinks } from "@/constants";
 
+//written by: Annie Li
+
 function Bottombar() {
   const pathname = usePathname();
   const router = useRouter();

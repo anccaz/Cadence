@@ -4,6 +4,8 @@ import Link from "next/link";
 import { formatDateString } from "@/lib/utils";
 import DeleteThread from "../forms/DeleteThread";
 
+//written by: Annie Li
+
 interface Props {
   id: string;
   currentUserId: string;

@@ -1,6 +1,8 @@
 "use client";
 import React, { useEffect, useState } from "react";
 
+//written by: Annie Li
+
 type InterestedUser = {
   name: string;
   contact: string;

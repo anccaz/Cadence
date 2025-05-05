@@ -5,6 +5,8 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { SignedIn, SignOutButton } from "@clerk/nextjs";
 
+//written by: Annie Li
+
 const Topbar = () => {
   const router = useRouter();
 

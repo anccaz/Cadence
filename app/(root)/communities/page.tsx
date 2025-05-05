@@ -1,6 +1,8 @@
 "use client";
 import React from "react";
 
+//written by: Annie Li
+
 type BandMember = {
   name: string;
   instrument: string;

@@ -1,6 +1,9 @@
 "use client";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import axios from 'axios';
+
+//written by: Annie Li & Jeffrey Billones
 
 const instrumentOptions = [
   "Guitar", "Bass", "Drums", "Vocals", "Keyboards", "Piano", "Synthesizer",
@@ -38,7 +41,13 @@ export default function CreatePostPage() {
     };
     const existingPosts = JSON.parse(localStorage.getItem("activity_posts") || "[]");
     localStorage.setItem("activity_posts", JSON.stringify([post, ...existingPosts]));
-
+    try{
+      const response =  axios.post("/api/listingPOST", post)
+      alert("Submission Success")
+    }catch (error){
+      console.error("Error w/ submission", error)
+      alert("Submission Failure")
+    } 
     router.push("/activity");
   };
 
