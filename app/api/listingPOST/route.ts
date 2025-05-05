@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import sql from 'mssql';
 
+// originally written by: Jeffrey Billones
+// rewritten by: Annie Li  
 
 // Helper to ensure env variables are defined
 function getEnv(name: string): string {
