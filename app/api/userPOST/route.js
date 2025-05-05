@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import sql from 'mssql';
 
+//written by: Jeffrey Billones
+
 /**
  * POST Request Route.js for User DB
  * Note: in the future change config to a file outside of this file
