@@ -25,7 +25,6 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import Image from 'next/image'
 import {useRouter} from "next/navigation"
-
 import {useForm} from 'react-hook-form';
 //import {Form} from '@/components/ui/form';
 import {zodResolver} from '@hookform/resolvers/zod';
@@ -37,6 +36,8 @@ import {useUploadThing} from "@/lib/uploadthing"
 import axios from 'axios'
 import { useUser } from '@clerk/clerk-react'
 
+
+//written by: Mitchell & Jeff
 interface Props {
     user: {
         id: string;
